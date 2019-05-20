@@ -71,13 +71,13 @@
       </div>
       <div class="row"></div>
       <button [disabled]="!addSchoolForm.form.valid" (click)="onSubmit()"
-        class="btn btn-primary pull-left">{{btnText}}</button>
-      <button class="btn btn-warning pull-right" (click)="resetForm(true)">Reset Form</button>
+        class="btn btn-primary fa-pull-left">{{btnText}}</button>
+      <button class="btn btn-warning fa-pull-right" (click)="resetForm(true)">Reset Form</button>
     </form>
 
   </div>
 
-  <div class="col-xs-4 pull-right" *ngIf="selectedGroup">
+  <div class="col-xs-4 fa-pull-right" *ngIf="selectedGroup">
     <h4 *ngIf="schools;else noSchools">Added Schools:</h4>
     <ng-template #noSchools>
       <h4>No Schools added in selected group.</h4>

@@ -14,14 +14,14 @@
           </div>
         </div>
       </div>
-      <div class="form-group pull-left">
+      <div class="form-group fa-pull-left">
         <button [disabled]="!addGroupForm.form.valid" class="btn btn-primary">Create Group</button>
       </div>
       <h4>{{responseMsg | async}}</h4>
     </form>
   </div>
 
-  <div class="col-xs-4 pull-right">
+  <div class="col-xs-4 fa-pull-right">
     <h4>Existing Groups:</h4>
     <div class="list-group list-of-groups">
       <a *ngFor="let group of groups | async" class="list-group-item">{{group.code}}</a>

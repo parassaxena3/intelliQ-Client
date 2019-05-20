@@ -109,7 +109,6 @@ export class ViewQuestionPaperComponent implements OnInit {
 
 		this.spinner.show();
 		html2canvas(data).then((canvas) => {
-			debugger;
 			var imgWidth = 210;
 			var pageHeight = 295;
 			var imgHeight = canvas.height * imgWidth / canvas.width;

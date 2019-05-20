@@ -10,12 +10,12 @@
           <span data-balloon="Group Code" data-balloon-pos="left"><i
               class="fas fa-users p-2 text-warning"></i>{{group.code}}</span><br />
           <span data-balloon="Created On" data-balloon-pos="left"><i
-              class="fas fa-calendar p-2 text-warning"></i>{{group.createDate |  date: dateFormat}}</span>
-          <span data-balloon="Last Modified On" data-balloon-pos="left" class="pull-right"><i
-              class="fas fa-calendar p-2 text-warning"></i>{{group.lastModifiedDate |  date: dateFormat}}</span><br>
+              class="fas fa-calendar-alt p-2 text-warning"></i>{{group.createDate |  date: dateFormat}}</span>
+          <span data-balloon="Last Modified On" data-balloon-pos="left" class="fa-pull-right"><i
+              class="fas fa-calendar-alt p-2 text-warning"></i>{{group.lastModifiedDate |  date: dateFormat}}</span><br>
           <hr style="border: 2px solid #e9ecf3;">
           <div *ngIf="!editMode">
-            <a class="pull-right text-yellow" (click)="editMode=true" data-balloon="Edit Subjects"
+            <a class="fa-pull-right text-yellow" (click)="editMode=true" data-balloon="Edit Subjects"
               data-balloon-pos="right">
               <i class="fas fa-pencil-alt"></i>
             </a>
@@ -33,7 +33,7 @@
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
-                    <i class="far fa-bookmark"></i>
+                    <i class="fas fa-book"></i>
                   </span>
                 </div>
                 <input type="text" class="form-control text-title" placeholder="Subjects" id="subjects" name="subjects"
@@ -49,7 +49,7 @@
             <div class="row mt-3">
               <div class="offset-md-3">
                 <button class="btn bg-remove text-white" (click)="onCancel();editMode=false;">
-                  <i class="fas fa-trash-alt text-white pr-2"></i>Cancel</button>
+                  <i class="fas fa-times text-white pr-2"></i>Cancel</button>
               </div>
               <div class="offset-md-1">
                 <button class="btn bg-new text-white" (click)='updateGroup();editMode=false;'>

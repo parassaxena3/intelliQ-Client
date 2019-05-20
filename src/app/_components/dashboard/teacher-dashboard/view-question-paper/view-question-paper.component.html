@@ -62,7 +62,7 @@
              data-balloon="Trignometry, Geometry, Volumes, Algebra"><i class="fas fa-bookmark pr-2"></i>Trignometry,
              Geometry ...</p> -->
           <p class="card-text"><span data-balloon="Created On" data-balloon-pos="right"><i
-                class="fas fa-calendar pr-2"></i>{{paper.lastModifiedDate |  date: dateFormat}}</span></p>
+                class="fas fa-calendar-alt pr-2"></i>{{paper.lastModifiedDate |  date: dateFormat}}</span></p>
         </div>
       </div>
     </div>
@@ -78,8 +78,8 @@
 
       <!-- Modal body -->
       <div class="modal-body" *ngIf="loadedPaper">
-        <a (click)="printPaper()" data-balloon-pos="right" data-balloon="Print Paper" class="print-paper pull-right"><i
-            class="fas fa-print p-1"></i></a>
+        <a (click)="printPaper()" data-balloon-pos="right" data-balloon="Print Paper"
+          class="print-paper fa-pull-right"><i class="fas fa-print p-1"></i></a>
         <div id="contentToConvert" #contentToConvert>
           <div *ngFor="let queSet of loadedPaper.sets" class="mb-4">
             <br>

@@ -13,8 +13,8 @@ import { NotificationService } from 'src/app/_services/notification.service';
 	styleUrls: [ './login.component.css' ]
 })
 export class LoginComponent implements OnInit {
-	private mobile = '8888888888';
-	private password = 'TP_8888888888';
+	private mobile = '';
+	private password = '';
 	private returnUrl: string;
 	constructor(
 		private authenticationService: AuthenticationService,

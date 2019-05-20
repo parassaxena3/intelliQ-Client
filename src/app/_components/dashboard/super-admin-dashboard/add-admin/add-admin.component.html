@@ -26,7 +26,7 @@
             </div>
           </div>
           <button *ngIf="!selectedSchool" [disabled]="sCode.invalid" (click)="findSchool()"
-            class="btn btn-primary pull-left">Find School</button>
+            class="btn btn-primary fa-pull-left">Find School</button>
 
           <div *ngIf="selectedSchool">
             <div class="form-group">
@@ -45,7 +45,7 @@
               </div>
             </div>
             <button *ngIf="!userSearchDone" [disabled]="nMobile.invaid" (click)="findUser()"
-              class="btn btn-primary pull-left">Find User</button>
+              class="btn btn-primary fa-pull-left">Find User</button>
             <div *ngIf="userSearchDone">
               <div class="form-group">
                 <input [disabled]="selectedUser" type="text" class="form-control text-title" placeholder="Full Name"
@@ -61,13 +61,13 @@
                 </div>
               </div>
               <button *ngIf="!selectedUser" (click)="addUser()" [disabled]="fname.invalid"
-                class="btn btn-primary pull-left">Add School Admin</button>
+                class="btn btn-primary fa-pull-left">Add School Admin</button>
               <button *ngIf="selectedUser && !isAlreadySchoolAdmin" [disabled]="fname.invalid"
-                (click)="assignRoleToUser()" class="btn btn-primary pull-left">Assign Role</button>
+                (click)="assignRoleToUser()" class="btn btn-primary fa-pull-left">Assign Role</button>
             </div>
           </div>
-          <button class="btn btn-warning pull-right" (click)="resetForm()">Reset Form</button>
-          <h4 class="invalid-feedback pull-left" *ngIf="isAlreadySchoolAdmin">User is already a School Admin</h4>
+          <button class="btn btn-warning fa-pull-right" (click)="resetForm()">Reset Form</button>
+          <h4 class="invalid-feedback fa-pull-left" *ngIf="isAlreadySchoolAdmin">User is already a School Admin</h4>
         </form>
       </div>
 
@@ -90,7 +90,7 @@
             </div>
           </div>
           <button *ngIf="!selectedGroup" [disabled]="groupcode.invalid" (click)="findGroup()"
-            class="btn btn-primary pull-left">Find Group</button>
+            class="btn btn-primary fa-pull-left">Find Group</button>
 
           <div *ngIf="selectedGroup">
             <div class="form-group">
@@ -109,7 +109,7 @@
               </div>
             </div>
             <button *ngIf="!userSearchDone" [disabled]="nMobile.invalid" (click)="findUser()"
-              class="btn btn-primary pull-left">Find User</button>
+              class="btn btn-primary fa-pull-left">Find User</button>
 
             <div *ngIf="userSearchDone">
               <div class="form-group">
@@ -125,14 +125,14 @@
                 </div>
               </div>
               <button *ngIf="!selectedUser" (click)="addUser()" [disabled]="fname.invalid"
-                class="btn btn-primary pull-left">Add Group Admin</button>
+                class="btn btn-primary fa-pull-left">Add Group Admin</button>
               <button *ngIf="selectedUser && !isAlreadyGroupAdmin" (click)="assignRoleToUser()"
-                [disabled]="fname.invalid" class="btn btn-primary pull-left">Assign Role</button>
+                [disabled]="fname.invalid" class="btn btn-primary fa-pull-left">Assign Role</button>
             </div>
 
           </div>
-          <button class="btn btn-warning pull-right" (click)="resetForm()">Reset Form</button>
-          <h4 class="invalid-feedback pull-left" *ngIf="isAlreadyGroupAdmin">User is already a Group Admin</h4>
+          <button class="btn btn-warning fa-pull-right" (click)="resetForm()">Reset Form</button>
+          <h4 class="invalid-feedback fa-pull-left" *ngIf="isAlreadyGroupAdmin">User is already a Group Admin</h4>
         </form>
       </div>
     </div>

@@ -166,7 +166,7 @@
                                   <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                       <span class="input-group-text" data-balloon="Added On" data-balloon-pos="left">
-                                        <i class="fas fa-calendar text-white"></i>
+                                        <i class="fas fa-calendar-alt text-white"></i>
                                       </span>
                                     </div>
                                     <input type="text" [value]="question.createDate | date: dateFormat"
@@ -357,7 +357,7 @@
                                   <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                       <span class="input-group-text" data-balloon="Added On" data-balloon-pos="left">
-                                        <i class="fas fa-calendar text-white"></i>
+                                        <i class="fas fa-calendar-alt text-white"></i>
                                       </span>
                                     </div>
                                     <input type="text" [value]="question.createDate | date: dateFormat"
@@ -562,9 +562,8 @@
                               <div class="offset-md-1 col-md-5">
                                 <div class="form-group">
                                   <label for="quillContainer">Description:</label>
-                                  <a href="#editorModal" data-toggle="modal"> <span
-                                      class="badge bg-modify text-white ml-2">Show Math
-                                      Editor</span></a>
+                                  <a hidden href="#editorModal" data-toggle="modal"> <span
+                                      class="badge bg-modify text-white ml-2">Toggle Editor</span></a>
                                   <div class="input-group">
                                     <div class="quill-editor-div">
                                       <quill-editor class="ql-editor" id="quillContainer" [(ngModel)]="quillHtml"
@@ -586,7 +585,7 @@
                               <div class="col-md-4">
                                 <div class="card-body" *ngIf="tempSelectedQuestion.imageUrl">
                                   <span (click)="tempSelectedQuestion.imageUrl=''">
-                                    <i class="fas fa-times pull-right clickable"></i> </span>
+                                    <i class="fas fa-times fa-pull-right clickable"></i> </span>
                                   <img [src]="tempSelectedQuestion.imageUrl" class="img-rounded img-thumbnail" alt="">
                                 </div>
                               </div>
@@ -597,12 +596,12 @@
                               <div class="offset-md-1 col-md-3">
                                 <button class="btn bg-new text-white" [disabled]="!editForm.form.valid"
                                   (click)='updateQuestion()'>
-                                  <i class="fas fa-trash-alt text-white pr-2"></i>Save</button>
+                                  <i class="fas fa-save text-white pr-2"></i>Save</button>
                               </div>
                               <div class="offset-md-3 col-md-3">
                                 <button class="btn bg-remove text-white"
                                   (click)="editMode=false;tempSelectedQuestion=null">
-                                  <i class="fas fa-pencil-alt text-white pr-2"></i>Cancel</button>
+                                  <i class="fas fa-times text-white pr-2"></i>Cancel</button>
                               </div>
                             </div>
                           </form>

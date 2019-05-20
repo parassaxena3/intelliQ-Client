@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { UserService } from 'src/app/_services/user.service';
 import { LocalStorageService } from 'src/app/_services/local-storage.service';
 import { User } from 'src/app/_models/user.model';
 import { RoleType } from 'src/app/_models/enums';
 import { UtilityService } from 'src/app/_services/utility.service';
 import { NotificationService } from 'src/app/_services/notification.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 @Component({
 	selector: 'app-school-users',
@@ -12,16 +13,20 @@ import { NotificationService } from 'src/app/_services/notification.service';
 	styleUrls: [ './school-users.component.css' ]
 })
 export class SchoolUsersComponent implements OnInit {
+	userToRemove: User;
 	users: User[];
+	confirmMsg = '';
 	loggedinUser: User;
 	searchTerm: string;
 	selectedRole = -1;
 	schoolId: string;
+	modalRef: BsModalRef;
 	constructor(
 		private userService: UserService,
 		private localStorageService: LocalStorageService,
 		private utilityService: UtilityService,
-		private notificationService: NotificationService
+		private notificationService: NotificationService,
+		private modalService: BsModalService
 	) {}
 
 	ngOnInit() {
@@ -34,8 +39,17 @@ export class SchoolUsersComponent implements OnInit {
 			this.users = users;
 		});
 	}
-	removeUser(user: User) {
-		debugger;
+	removeUser(template: TemplateRef<any>, user: User) {
+		this.userToRemove = user;
+		this.confirmMsg = this.isAdmin(user)
+			? 'Teacher/Reviewer roles will be revoked. Are you sure?'
+			: 'This user will be permanently removed. Are you sure?';
+		this.modalRef = this.modalService.show(template, {
+			class: 'modal-md modal-dialog-centered'
+		});
+	}
+	confirm(): void {
+		var user = this.userToRemove;
 		if (this.isAdmin(user)) {
 			user.roles = user.roles.filter(
 				(role) => role.roleType === RoleType.GROUPADMIN || role.roleType === RoleType.SCHOOLADMIN
@@ -52,6 +66,11 @@ export class SchoolUsersComponent implements OnInit {
 					}
 				});
 		}
+		this.modalRef.hide();
+	}
+
+	decline(): void {
+		this.modalRef.hide();
 	}
 	isAdmin(user: User) {
 		if (

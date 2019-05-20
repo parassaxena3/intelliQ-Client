@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { environment } from './../environments/environment';
-
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './_components/login/login.component';
@@ -66,6 +66,7 @@ import { TimetableComponent } from './_components/timetable/timetable.component'
 import { ViewTeachersComponent } from './_components/dashboard/reviewer-dashboard/view-teachers/view-teachers.component';
 import { SafePipe } from './_pipes/safe.pipe';
 import { FilterPipe } from './_pipes/filter.pipe';
+import { ModalModule } from 'ngx-bootstrap/modal';
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -124,7 +125,9 @@ import { FilterPipe } from './_pipes/filter.pipe';
 		NgbModule,
 		TypeaheadModule.forRoot(),
 		AngularFireModule.initializeApp(environment.firebase),
-		AngularFireStorageModule
+		AngularFireStorageModule,
+		BsDatepickerModule.forRoot(),
+		ModalModule.forRoot()
 	],
 	providers: [
 		AuthGuard,

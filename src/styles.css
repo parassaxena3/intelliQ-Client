@@ -165,3 +165,26 @@ body {
 .text-blue {
   color: #007BFF;
 }
+
+.quill-editor-div {
+  height: 200px !important;
+  width: 600px !important;
+}
+
+.ql-editor {
+  word-break: break-all;
+  border-right: none !important;
+}
+
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: grey;
+}

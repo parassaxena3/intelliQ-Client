@@ -11,11 +11,8 @@
             </div>
             <select class="form-control custom-select" (change)="updateFilters('std',$event.target.value,0)"
               id="templates">
-              <option value="-1">Filter Standard</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
+              <option [ngValue]="-1">All Standards</option>
+              <option [ngValue]="standard" *ngFor="let standard of standards">{{standard}}</option>
             </select>
           </div>
         </div>
@@ -30,10 +27,8 @@
             </div>
             <select (change)="updateFilters('subject',$event.target.value,1)" class="form-control custom-select"
               id="templates">
-              <option value="">Filter Subject</option>
-              <option value="Mathematics">Mathematics</option>
-              <option value="Chemistry">Chemistry</option>
-              <option value="Environmental Science">Environmental Science</option>
+              <option value="">All Subjects</option>
+              <option [ngValue]="subject" *ngFor="let subject of subjects">{{subject}}</option>
             </select>
           </div>
         </div>
@@ -47,7 +42,8 @@
           <span data-balloon-pos="down" attr.data-balloon="{{paper.tag}}" data-balloon-length="fit">
             {{paper.tag | trim:20 | titlecase}}
           </span>
-          <a (click)="removePaper(paper.testId)" data-balloon-pos="right" data-balloon="Remove Paper"
+          <!-- removePaper(paper.testId) -->
+          <a (click)="removePaper(template,paper.testId)" data-balloon-pos="right" data-balloon="Remove Paper"
             class="remove-paper hidden-control"><i class="fas fa-trash-alt p-1"></i></a>
           <a (click)="fetchPaper(paper.testId)" data-balloon-pos="right" data-balloon="Preview Paper"
             data-toggle="modal" data-target="#printModal" class="fetch-paper hidden-control"><i
@@ -81,10 +77,10 @@
     <div class="modal-content printBox">
 
       <!-- Modal body -->
-      <div class="modal-body" *ngIf="loadloadedPaper">
+      <div class="modal-body" *ngIf="loadedPaper">
         <a (click)="printPaper()" data-balloon-pos="right" data-balloon="Print Paper" class="print-paper pull-right"><i
             class="fas fa-print p-1"></i></a>
-        <div id="contentToConvert">
+        <div id="contentToConvert" #contentToConvert>
           <div *ngFor="let queSet of loadedPaper.sets" class="mb-4">
             <br>
             <h4 class="text-center text-dark strong">Set {{queSet.set}}</h4>
@@ -125,3 +121,11 @@
     </div>
   </div>
 </div>
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to remove this paper?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+  </div>
+</ng-template>

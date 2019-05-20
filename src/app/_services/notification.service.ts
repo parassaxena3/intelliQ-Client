@@ -8,16 +8,14 @@ export class NotificationService {
 	showSuccessWithTimeout(message: string, title: string, timespan: number) {
 		this.toastr.success(message, title, {
 			timeOut: timespan,
-			positionClass: 'toast-top-center',
-			progressBar: true
+			positionClass: 'toast-top-center'
 		});
 	}
 
 	showErrorWithTimeout(message: string, title: string, timespan: number) {
 		this.toastr.warning(message, title, {
 			timeOut: timespan,
-			positionClass: 'toast-top-center',
-			progressBar: true
+			positionClass: 'toast-top-center'
 		});
 	}
 }

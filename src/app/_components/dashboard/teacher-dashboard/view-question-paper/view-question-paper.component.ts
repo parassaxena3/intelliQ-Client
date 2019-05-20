@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { QuestionPaperService } from 'src/app/_services/question-paper.service';
 import { User } from 'src/app/_models/user.model';
 import { TestPaper } from 'src/app/_models/testpaper.model';
 import { LocalStorageService } from 'src/app/_services/local-storage.service';
 import { QuestionPaperDto } from 'src/app/_dto/question-paper.dto';
 import { UtilityService } from 'src/app/_services/utility.service';
-import * as jspdf from 'jspdf';
-import html2canvas from 'html2canvas';
+// import * as jspdf from 'jspdf';
+import * as jsPDF from 'jspdf';
+import * as html2canvas from 'html2canvas';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ObjFilter } from 'src/app/_dto/filter.dto';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 
 @Component({
 	selector: 'app-view-question-paper',
@@ -16,6 +18,9 @@ import { ObjFilter } from 'src/app/_dto/filter.dto';
 	styleUrls: [ './view-question-paper.component.css' ]
 })
 export class ViewQuestionPaperComponent implements OnInit {
+	paperToRemove: string;
+	standards: Set<number>;
+	subjects: Set<string>;
 	objFilters: ObjFilter[];
 	loggedInUser: User;
 	papers: TestPaper[];
@@ -23,28 +28,41 @@ export class ViewQuestionPaperComponent implements OnInit {
 	activeSet = 1;
 	currSet: QuestionPaperDto;
 	questionPapers: QuestionPaperDto[];
-
+	modalRef: BsModalRef;
+	@ViewChild('contentToConvert') contentToConvert: ElementRef;
 	constructor(
 		private localStorageService: LocalStorageService,
 		private utilityService: UtilityService,
 		private questionPaperService: QuestionPaperService,
-		private spinner: NgxSpinnerService
+		private spinner: NgxSpinnerService,
+		private modalService: BsModalService
 	) {}
 
 	ngOnInit() {
 		this.objFilters = [ new ObjFilter(), new ObjFilter() ];
+		this.subjects = new Set();
+		this.standards = new Set();
 		this.loggedInUser = this.localStorageService.getCurrentUser();
 		this.fetchAllPapers();
 	}
-	updateFilters(key, value, index: number) {
-		debugger;
+	updateFilters(key: string, value: any, index: number) {
+		if (index === 0) {
+			value = Number(value);
+		}
 		this.objFilters[index] = { key: key, value: value };
+		this.objFilters = JSON.parse(JSON.stringify(this.objFilters));
 	}
 	fetchAllPapers() {
 		this.questionPaperService
 			.fetchPapers(this.loggedInUser.school.group.code, this.loggedInUser.userId)
 			.subscribe((templates) => {
+				var tempArray = [];
 				this.papers = templates;
+				this.papers.forEach((paper) => {
+					tempArray.push(paper.std);
+					this.subjects.add(paper.subject);
+				});
+				this.standards = new Set(tempArray.sort());
 			});
 	}
 	fetchPaper(paperId) {
@@ -73,20 +91,40 @@ export class ViewQuestionPaperComponent implements OnInit {
 		this.activeSet = set;
 		this.currSet = this.questionPapers[set - 1];
 	}
+	downloadPdf() {
+		var hdr;
+		let doc = new jsPDF.default();
+		this.loadedPaper.sets.forEach((set: QuestionPaperDto) => {
+			hdr = document.createElement('h3');
+			var node = document.createTextNode('Set ' + set.set);
+			hdr.appendChild(node);
+		});
+		//doc.addHTML().fromHTML(hdr, 15, 15);
+		doc.save('mypdf.pdf');
+	}
 	printPaper() {
+		// let doc = new jsPDF.default();
+		//	let content = this.contentToConvert.nativeElement;
 		var data = document.getElementById('contentToConvert');
 
 		this.spinner.show();
 		html2canvas(data).then((canvas) => {
+			debugger;
 			var imgWidth = 210;
 			var pageHeight = 295;
 			var imgHeight = canvas.height * imgWidth / canvas.width;
 			var heightLeft = imgHeight;
 
-			var doc = new jspdf('p', 'mm', 'a4');
+			var doc = new jsPDF.default('p', 'mm', 'a4');
+			// var options = {
+			// 	pagesplit: true
+			// };
 			var position = 0;
 			const contentDataURL = canvas.toDataURL('image/png');
-			doc.addImage(contentDataURL, 'JPEG', 0, position, imgWidth, imgHeight);
+			doc.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+			// doc.addHTML(data, function() {
+			// 	doc.save('test.pdf');
+			// });
 			heightLeft -= pageHeight;
 
 			while (heightLeft >= 0) {
@@ -117,11 +155,25 @@ export class ViewQuestionPaperComponent implements OnInit {
 		// });
 	}
 
-	removePaper(paperId: string) {
-		this.questionPaperService.deleteDraft(this.loggedInUser.school.group.code, paperId).subscribe((response) => {
-			if (response) {
-				this.papers = this.papers.filter((x) => x.testId !== paperId);
-			}
+	removePaper(template: TemplateRef<any>, paperId: string) {
+		this.paperToRemove = paperId;
+		this.modalRef = this.modalService.show(template, {
+			class: 'modal-md modal-dialog-centered'
 		});
+	}
+
+	confirm(): void {
+		this.questionPaperService
+			.deleteDraft(this.loggedInUser.school.group.code, this.paperToRemove)
+			.subscribe((response) => {
+				if (response) {
+					this.papers = this.papers.filter((x) => x.testId !== this.paperToRemove);
+				}
+			});
+		this.modalRef.hide();
+	}
+
+	decline(): void {
+		this.modalRef.hide();
 	}
 }

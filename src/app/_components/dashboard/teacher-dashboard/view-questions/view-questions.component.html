@@ -377,10 +377,11 @@
                                       Math
                                       Editor</span></a>
                                   <div class="input-group">
-                                    <quill-editor class="quill-editor-add" id="quillContainer" [(ngModel)]="quillHtml"
-                                      [modules]="quillModule" name="description" required #desc="ngModel">
-                                    </quill-editor>
-
+                                    <div class="quill-editor-div">
+                                      <quill-editor class="ql-editor" id="quillContainer" [(ngModel)]="quillHtml"
+                                        [modules]="quillModule" name="description" required #desc="ngModel">
+                                      </quill-editor>
+                                    </div>
                                     <div *ngIf="desc.invalid && (desc.dirty || desc.touched)"
                                       class="invalid-feedback mt-3">
                                       <div *ngIf="desc.errors.required">

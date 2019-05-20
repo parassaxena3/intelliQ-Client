@@ -16,6 +16,7 @@ import { Standard } from 'src/app/_models/standard.model';
 	styleUrls: [ './user-profile.component.css' ]
 })
 export class UserProfileComponent implements OnInit {
+	dob: Date;
 	hideModal: boolean;
 	otp1: string;
 	otp2: string;
@@ -46,6 +47,7 @@ export class UserProfileComponent implements OnInit {
 
 	ngOnInit() {
 		this.user = this.localStorageService.getCurrentUser();
+		this.dob = new Date(this.user.dob);
 		var index = this.user.name.indexOf(' ');
 		this.firstName = this.user.name.substring(0, index);
 		this.lastName = this.user.name.substring(index + 1);
@@ -67,7 +69,7 @@ export class UserProfileComponent implements OnInit {
 		});
 	}
 	updateUser() {
-		this.user.dob = new Date(this.user.dob);
+		this.user.dob = new Date(this.dob);
 		this.user.name = this.firstName + ' ' + this.lastName;
 		this.userService.updateUser(this.user).subscribe((response) => {
 			if (response) {

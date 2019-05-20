@@ -71,7 +71,7 @@ export class SchoolUpsertUsersComponent implements OnInit {
 	}
 
 	onMobileEntered() {
-		if (this.prevMobile === this.user.mobile) {
+		if (this.prevMobile === this.user.mobile || !this.user.mobile) {
 			return;
 		}
 		this.prevMobile = this.user.mobile;
@@ -200,8 +200,8 @@ export class SchoolUpsertUsersComponent implements OnInit {
 		return cls;
 	}
 	addUser() {
-		if (!this.user.name) {
-			this.notificationService.showErrorWithTimeout('Please Enter Name', null, 2000);
+		if (!this.user.name || (this.user.name && this.user.name.trim().indexOf(' ') === -1)) {
+			this.notificationService.showErrorWithTimeout('Please Enter Full Name', null, 2000);
 			return;
 		}
 
@@ -234,7 +234,11 @@ export class SchoolUpsertUsersComponent implements OnInit {
 				}
 			});
 		} else {
-			this.userService.addUser(this.user).subscribe();
+			this.userService.addUser(this.user).subscribe((response) => {
+				if (response) {
+					this.resetForm(true);
+				}
+			});
 		}
 	}
 

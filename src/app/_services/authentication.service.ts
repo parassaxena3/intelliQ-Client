@@ -43,10 +43,12 @@ export class AuthenticationService implements OnInit {
 	}
 
 	logout(redirectToLogin: boolean) {
+		if (this.cookieService.check('XSRF-TOKEN')) {
+			this.userService.logout();
+		}
 		this.localStorageService.removeItemFromLocalStorage('user');
 		this.userService.userDetailsUpdated.next(null);
 		this.userService.userRoleUpdated.next(null);
-		this.userService.logout();
 		this.schoolService.schoolFetched.next(null);
 		this.groupService.groupFetched.next(null);
 		if (redirectToLogin) {

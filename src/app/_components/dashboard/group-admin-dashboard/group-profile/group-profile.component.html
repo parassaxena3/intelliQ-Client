@@ -42,8 +42,9 @@
               </div>
             </div>
 
-            <span class="badge bg-dark text-white mr-1" *ngFor="let subject of group.subjects">{{subject.title}}<i
-                (click)="removeSubject(subject.title)" class="fas fa-times clickable ml-1"></i></span>
+            <span class="badge bg-dark text-white mr-1 p-1 mb-1"
+              *ngFor="let subject of group.subjects">{{subject.title}}<i (click)="removeSubject(subject.title)"
+                class="fas fa-times clickable ml-1"></i></span>
 
             <div class="row mt-3">
               <div class="offset-md-3">

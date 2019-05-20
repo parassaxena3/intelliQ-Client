@@ -129,8 +129,8 @@
                     <i class="far fa-bookmark"></i>
                   </span>
                 </div>
-                <input type="text" class="form-control text-title" placeholder="Topics" id="topics" name="tags"
-                  [typeahead]="tagsSuggestions" (keyup)="addTag($event)" (blur)="addTag($event)"
+                <input type="text" class="form-control text-title" placeholder="Topics (atleast 3 chars)" id="topics"
+                  name="tags" [typeahead]="tagsSuggestions" (keyup)="addTag($event)" (blur)="addTag($event)"
                   (typeaheadOnSelect)="addTag($event)" [(ngModel)]="tags">
               </div>
             </div>
@@ -179,9 +179,10 @@
                 Editor</span></a>
             <div class="input-group">
 
-              <div>
-                <quill-editor class="c" id="quillContainer" [disabled]="selectedSubject==null" [(ngModel)]="quillHtml"
-                  [modules]="quillModule" name="description" (keyup)="getSuggestions($event)" required #desc="ngModel">
+              <div class="quill-editor-div">
+                <quill-editor class="ql-editor" id="quillContainer" [disabled]="selectedSubject==null"
+                  [(ngModel)]="quillHtml" [modules]="quillModule" name="description" (keyup)="getSuggestions($event)"
+                  required #desc="ngModel">
                 </quill-editor>
               </div>
               <!-- <div [hidden]="!showMath">

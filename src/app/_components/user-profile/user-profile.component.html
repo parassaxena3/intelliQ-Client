@@ -128,8 +128,9 @@
                         <i class="fas fa-calendar-alt mx-auto"></i>
                       </span>
                     </div>
-                    <input type="date" class="form-control" [ngModel]="user.dob | date:'yyyy-MM-dd'"
-                      (ngModelChange)="user.dob = $event" name="dob" title="DOB" placeholder="DOB">
+                    <input type="text" class="form-control" [(ngModel)]="dob" name="dob" title="DOB" placeholder="DOB"
+                      bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' ,adaptivePosition: true,containerClass:
+                      'theme-default'}">
                   </div>
 
                   <button type="submit" [disabled]="!profileForm.form.valid"

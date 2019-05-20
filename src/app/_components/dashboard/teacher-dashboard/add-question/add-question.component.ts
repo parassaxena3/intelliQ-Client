@@ -223,6 +223,8 @@ export class AddQuestionComponent implements OnInit {
 		addQuesForm.form.reset();
 		this.question = new Question();
 		this.question.tags = [];
+		this.fileInput.nativeElement.value = null;
+		this.selectedFile = null;
 	}
 	getSuggestions(event) {
 		var text = document.getElementById('quillContainer').textContent;

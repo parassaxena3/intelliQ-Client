@@ -16,7 +16,7 @@
                   </div>
                   <div id="accordion">
                     <!-- LIST ITEM 1 -->
-                    <div class="card mb-4 question-list-item"
+                    <div class="card mb-2 question-list-item"
                       *ngFor="let question of pendingRequests | slice: 0 : pageSize">
                       <div class="card-header">
                         <div class="row text-white">
@@ -38,7 +38,7 @@
                             </span>
                             <span class="col-md-3">
                               <span class="badge item-badge" data-balloon="Owner" data-balloon-pos="left">
-                                <i class="far fa-bookmark text-white mr-2"></i>{{question.owner.userName}}</span>
+                                <i class="fas fa-user text-white mr-2"></i>{{question.owner.userName}}</span>
                             </span>
                             <span class="col-md-3">
                               <span *ngIf="question.imageUrl" (click)="imageUrl=question.imageUrl"
@@ -67,7 +67,7 @@
                                 <div class="offset-md-1 col-md-4">
                                   <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                      <span class="input-group-text" data-balloon="Standard" data-balloon-pos="right">
+                                      <span class="input-group-text" data-balloon="Standard" data-balloon-pos="left">
                                         <i class="fas fa-graduation-cap text-white"></i>
                                       </span>
                                     </div>
@@ -78,8 +78,8 @@
                                 <div class="offset-md-1 col-md-4">
                                   <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                      <span class="input-group-text" data-balloon="Subject" data-balloon-pos="right">
-                                        <i class="fas fa-graduation-cap text-white"></i>
+                                      <span class="input-group-text" data-balloon="Subject" data-balloon-pos="left">
+                                        <i class="fas fa-book text-white"></i>
                                       </span>
                                     </div>
                                     <input type="text" [value]="question.subject" class="form-control" placeholder="">
@@ -92,8 +92,8 @@
                                 <div class="offset-md-1 col-md-4">
                                   <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                      <span class="input-group-text" data-balloon="Chapter" data-balloon-pos="right">
-                                        <i class="fas fa-graduation-cap text-white"></i>
+                                      <span class="input-group-text" data-balloon="Chapter" data-balloon-pos="left">
+                                        <i class="fas fa-bookmark text-white"></i>
                                       </span>
                                     </div>
                                     <input type="text" [value]="question.topic" class="form-control" placeholder="">
@@ -103,8 +103,8 @@
                                 <div class="offset-md-1 col-md-4">
                                   <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                      <span class="input-group-text" data-balloon="Topics" data-balloon-pos="right">
-                                        <i class="fas fa-graduation-cap text-white"></i>
+                                      <span class="input-group-text" data-balloon="Topics" data-balloon-pos="left">
+                                        <i class="far fa-bookmark text-white"></i>
                                       </span>
                                     </div>
                                     <input type="text" [value]="question.tags" class="form-control" placeholder="">
@@ -117,8 +117,8 @@
                                 <div class="offset-md-1 col-md-4">
                                   <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                      <span class="input-group-text" data-balloon="Difficulty" data-balloon-pos="right">
-                                        <i class="fas fa-graduation-cap text-white"></i>
+                                      <span class="input-group-text" data-balloon="Difficulty" data-balloon-pos="left">
+                                        <i class="fas fa-layer-group text-white"></i>
                                       </span>
                                     </div>
                                     <input type="text" [value]="utilityService.getDifficultyDesc(question.difficulty)"
@@ -129,8 +129,8 @@
                                 <div class="offset-md-1 col-md-4">
                                   <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                      <span class="input-group-text" data-balloon="Section" data-balloon-pos="right">
-                                        <i class="fas fa-graduation-cap text-white"></i>
+                                      <span class="input-group-text" data-balloon="Section" data-balloon-pos="left">
+                                        <i class="fas fa-indent text-white"></i>
                                       </span>
                                     </div>
                                     <input type="text" class="form-control"
@@ -144,8 +144,8 @@
                                 <div class="offset-md-1 col-md-4">
                                   <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                      <span class="input-group-text" data-balloon="Owner" data-balloon-pos="right">
-                                        <i class="fas fa-graduation-cap text-white"></i>
+                                      <span class="input-group-text" data-balloon="Owner" data-balloon-pos="left">
+                                        <i class="fas fa-user-tie text-white"></i>
                                       </span>
                                     </div>
                                     <input type="text" class="form-control" [value]="question.owner.userName"
@@ -157,8 +157,8 @@
                                   <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                       <span class="input-group-text" data-balloon="Created Date"
-                                        data-balloon-pos="right">
-                                        <i class="fas fa-graduation-cap text-white"></i>
+                                        data-balloon-pos="left">
+                                        <i class="fas fa-calendar text-white"></i>
                                       </span>
                                     </div>
                                     <input type="text" [value]="question.createDate | date: dateFormat"

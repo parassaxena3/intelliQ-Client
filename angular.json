@@ -24,7 +24,7 @@
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/font-awesome/css/font-awesome.css"
             ],
-            "scripts": ["node_modules/quill/dist/quill.js"]
+            "scripts": []
           },
           "configurations": {
             "production": {

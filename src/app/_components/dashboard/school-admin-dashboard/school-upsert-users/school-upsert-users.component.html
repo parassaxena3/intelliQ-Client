@@ -4,7 +4,7 @@
       <div class="offset-md-3 col-md-1">
         <div class="form-group form-inline">
           <a *ngIf="roleType!==''" class="badge badge-pill btn-warning p-2" (click)="resetForm(true)"
-            data-balloon=" Reset Form" data-balloon-pos="left">
+            data-balloon="Reset Form" data-balloon-pos="left">
             <i class="fas fa-redo-alt text-white"></i>
           </a>
         </div>
@@ -13,7 +13,7 @@
         <div class="form-group form-inline">
           <div class="input-group" style="width:100%;">
             <div class="input-group-prepend">
-              <span class="input-group-text" data-balloon="Standard" data-balloon-pos="down">
+              <span class="input-group-text" data-balloon="Role" data-balloon-pos="down">
                 <i class="fas fa-user-tag"></i>
               </span>
             </div>
@@ -47,7 +47,7 @@
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">
-                  <i class="fas fa-bookmark"></i>
+                  <i class="fas fa-mobile-alt"></i>
                 </span>
               </div>
               <input id="mobile" #mobileTxt type="text" name="mobile" maxlength="10" minlength="10" class="form-control"
@@ -64,7 +64,7 @@
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">
-                  <i class="fas fa-bookmark"></i>
+                  <i class="fas fa-user"></i>
                 </span>
               </div>
               <input id="fullName" #nameTxt [disabled]="user.userId" type="text" name="fullname" required
@@ -107,7 +107,7 @@
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">
-                  <i class="fas fa-bookmark"></i>
+                  <i class="fas fa-user"></i>
                 </span>
               </div>
               <select tabindex="4" (change)="updateReviewer()" class="form-control" [(ngModel)]="selectedReviewerId"

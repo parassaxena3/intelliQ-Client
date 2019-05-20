@@ -3,7 +3,7 @@
   <div class="grid-container role-card ">
 
     <div *ngFor="let role of roles" [ngClass]="getClassForRole(role)" (click)="onRoleSelected(role)"
-      class="card rounded-lg clickable" style="width:300px;">
+      class="card rounded-lg clickable" style="width:275px;">
       <i class="fas fa-user fa-7x mx-auto p-3"></i>
       <div class="card-body">
         <h4 class="card-title text-center">{{role | rolePipe |titlecase}}</h4>

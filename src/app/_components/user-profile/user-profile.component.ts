@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from 'src/app/_services/user.service';
 import { User } from 'src/app/_models/user.model';
 import { LocalStorageService } from 'src/app/_services/local-storage.service';
@@ -28,7 +28,6 @@ export class UserProfileComponent implements OnInit {
 	oldPassword: string;
 	newPassword: string;
 	confirmPassword: string;
-	otpGenerated = false;
 	newMobile: string;
 	otpSessionId: string;
 	firstName: string;
@@ -37,6 +36,7 @@ export class UserProfileComponent implements OnInit {
 	isTeacher: boolean;
 	reviewerStds: Standard[];
 	teacherStds: Standard[];
+	@ViewChild('closeModal') closeModal: ElementRef;
 	constructor(
 		private userService: UserService,
 		private localStorageService: LocalStorageService,
@@ -94,7 +94,7 @@ export class UserProfileComponent implements OnInit {
 			if (response) {
 				this.notificationService.showSuccessWithTimeout('OTP sent successfully !!', null, 2000);
 				this.otpSessionId = response;
-				this.otpGenerated = true;
+				this.otp1 = this.otp2 = this.otp3 = this.otp4 = this.otp5 = this.otp6 = '';
 			}
 		});
 	}
@@ -111,9 +111,9 @@ export class UserProfileComponent implements OnInit {
 							this.user.mobile = this.newMobile;
 							this.newMobile = '';
 							this.otp1 = this.otp2 = this.otp3 = this.otp4 = this.otp5 = this.otp6 = '';
-							this.otpGenerated = false;
 							this.localStorageService.addItemToLocalStorage('user', this.user);
 							this.userService.userDetailsUpdated.next(this.user);
+							this.closeModal.nativeElement.click();
 						}
 					});
 				}
@@ -122,16 +122,30 @@ export class UserProfileComponent implements OnInit {
 	}
 	reset() {
 		this.newMobile = '';
-		this.otpGenerated = false;
 		this.oldPassword = '';
 		this.newPassword = '';
 		this.confirmPassword = '';
 	}
 	calculateAge(dob: string) {
+		if (dob === '0001-01-01T00:00:00Z') {
+			return null;
+		}
 		var dateOfBirth = new Date(dob);
 		var diff_ms = Date.now() - dateOfBirth.getTime();
 		var age_dt = new Date(diff_ms);
 
 		return Math.abs(age_dt.getUTCFullYear() - 1970);
+	}
+	keytab(event) {
+		if (event.currentTarget.value === '') {
+			return;
+		}
+		let element = event.srcElement.nextElementSibling; // get the sibling element
+
+		if (element == null) {
+			return;
+		} else {
+			element.focus();
+		}
 	}
 }

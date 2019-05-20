@@ -50,7 +50,7 @@
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
-                    <i class="fas fa-box"></i>
+                    <i class="fas fa-indent"></i>
                   </span>
                 </div>
                 <select class="form-control custom-select" id="section" [(ngModel)]="question.length"
@@ -76,7 +76,7 @@
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
-                    <i class="fas fa-book"></i>
+                    <i class="fas fa-layer-group"></i>
                   </span>
                 </div>
                 <select class="form-control custom-select" id="difficulty" [(ngModel)]="question.difficulty"
@@ -161,7 +161,7 @@
           <div class="offset-md-1 col-md-4">
             <div class="form-group">
               <label for="myFile">Image:</label><br>
-              <input type="file" accept="image/*" [(ngModel)]="question.imageUrl" id="myFile" name="myFile"
+              <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" id="myFile" name="myFile"
                 class="img-upload-box">
             </div>
           </div>
@@ -174,13 +174,19 @@
         <div class="offset-md-1 col-md-5">
           <div class="form-group">
             <label for="quillContainer">Description:</label>
-            <a href="#editorModal" data-toggle="modal"> <span class="badge bg-modify text-white ml-2">Show Math
+            <a hidden (click)="toggleEditor()" data-toggle="modal" data-target="#editorModal"> <span
+                class="badge bg-modify text-white ml-2 clickable">Toggle
                 Editor</span></a>
             <div class="input-group">
-              <quill-editor class="quill-editor-add ql-editor" id="quillContainer" [disabled]="selectedSubject==null"
-                [(ngModel)]="quillHtml" [modules]="quillModule" name="description" (keyup)="getSuggestions($event)"
-                required #desc="ngModel">
-              </quill-editor>
+
+              <div>
+                <quill-editor class="c" id="quillContainer" [disabled]="selectedSubject==null" [(ngModel)]="quillHtml"
+                  [modules]="quillModule" name="description" (keyup)="getSuggestions($event)" required #desc="ngModel">
+                </quill-editor>
+              </div>
+              <!-- <div [hidden]="!showMath">
+                <div id="editorContainer"></div>
+              </div> -->
 
               <div *ngIf="desc.invalid && (desc.dirty || desc.touched)" class="invalid-feedback mt-3">
                 <div *ngIf="desc.errors.required">
@@ -189,8 +195,10 @@
               </div>
 
             </div>
+
           </div>
           <br>
+
           <div class="form-inline mt-5">
             <button class="btn bg-primary text-white mr-4" style="width: 150px" [disabled]="!addQuesForm.form.valid"
               (click)="addQuestion()">Add</button>
@@ -201,6 +209,7 @@
 
         <!-- Question Suggestions -->
         <div class="col-md-5">
+
           <div class="table-responsive question-suggestion-area"
             *ngIf="suggestedQuestions && suggestedQuestions.length>0">
             <table class="table table-dark table-hover table-striped rounded-lg">

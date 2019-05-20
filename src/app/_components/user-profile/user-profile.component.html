@@ -7,14 +7,15 @@
 
       <div class="card profile-card">
         <section class="icon-holder rounded-circle text-center mx-auto">
-          <i class="fas fa-user fa-5x mx-auto p-3"></i>
+          <i class="fas fa-user-tie fa-5x mx-auto p-3"></i>
         </section>
-        <div class="card-body text-white font-weight-lighter font-italic">
+        <div class="card-body text-white font-weight-lighter">
           <span><i class="fas fa-user p-2 text-warning"></i>{{user.userName}}</span><br />
-          <span><i class="fas fa-pencil-alt p-2 text-warning"></i>{{firstName}} {{lastName}}</span><br />
-          <span><i class="fas fa-phone p-2 text-warning"></i>{{user.mobile}}</span><br />
-          <span *ngIf="user.email"><i class="fas fa-envelope p-2 text-warning"></i>{{user.email}}</span><br />
-          <span *ngIf="user.gender || user.dob"><i class="fas fa-venus p-2 text-warning"></i>
+          <span><i class="fas fa-user-alt p-2 text-warning"></i>{{firstName}} {{lastName}}</span><br />
+          <span><i class="fas fa-mobile-alt p-2 text-warning"></i>{{user.mobile}}</span><br />
+          <span *ngIf="user.email"><i class="fas fa-envelope p-2 text-warning"></i>{{user.email}}<br /></span>
+          <span *ngIf="user.gender || user.dob"><i class="fas p-2 text-warning"
+              [ngClass]="utilityService.getIconForGender(user.gender)"></i>
             <span *ngIf="user.gender!==''">{{user.gender}}</span>
             <span *ngIf="calculateAge(user.dob)">
               <span *ngIf="user.gender!==''">,</span>
@@ -62,7 +63,7 @@
                 <form autocomplete="off" #profileForm="ngForm" (ngSubmit)="updateUser();">
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="First Name" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-user mx-auto"></i>
                       </span>
@@ -80,7 +81,7 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Last Name" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-user mx-auto"></i>
                       </span>
@@ -95,7 +96,7 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Email" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-envelope mx-auto"></i>
                       </span>
@@ -109,7 +110,7 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Gender" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-mars mx-auto"></i>
                       </span>
@@ -122,7 +123,7 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Date Of Birth" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-calendar-alt mx-auto"></i>
                       </span>
@@ -145,7 +146,7 @@
                 <form autocomplete="off" #mobileForm="ngForm" (ngSubmit)="generateOtp();"
                   [appMustMatch]="['cMobile', 'nMobile','NO']">
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Current Mobile" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-mobile-alt mx-auto"></i>
                       </span>
@@ -154,14 +155,14 @@
                       disabled>
                   </div>
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="New Mobile" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-mobile-alt mx-auto"></i>
                       </span>
                     </div>
                     <input type="text" name="nMobile" placeholder="New Number" class="form-control"
                       [(ngModel)]="newMobile" #nMobile="ngModel" required minlength="10" maxlength="10"
-                      pattern="[0-9]*">
+                      pattern="[1-9]{1}[0-9]*">
                     <div *ngIf="nMobile.invalid && (nMobile.dirty || nMobile.touched)" class="invalid-feedback">
                       <div *ngIf="nMobile.errors.required">
                         Mobile Number is required.
@@ -170,7 +171,7 @@
                         Mobile Number must be 10 digits .
                       </div>
                       <div *ngIf="nMobile.errors.pattern">
-                        Only numbers are allowed
+                        Only numbers are allowed with non-zero 1st digit
                       </div>
                       <div *ngIf="nMobile.errors.mustNotMatch">
                         Cannot have same mobile number
@@ -194,7 +195,7 @@
                   [appMustMatch]="['newPwd', 'confirmPwd','YES']">
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Old Password" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-unlock mx-auto"></i>
                       </span>
@@ -212,7 +213,7 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="New Password" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-lock mx-auto"></i>
                       </span>
@@ -230,7 +231,7 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Confirm Password" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-lock mx-auto"></i>
                       </span>
@@ -309,16 +310,15 @@
 
   </div>
 
-  <!-- [ngClass]="{'fade': hideModal,'show':!hideModal}" -->
   <!-- OTP modal -->
   <div class="modal fade" id="myModal" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered rounded-lg">
       <div class="modal-content otp-box">
         <div class="modal-header">
-          <span class="text-center text-dark font-weight-lighter font-italic">
+          <span class="text-center text-dark font-weight-lighter">
             <h5>OTP</h5>
           </span>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button type="button" class="close" data-dismiss="modal" #closeModal>&times;</button>
         </div>
         <!-- Modal body -->
         <div class="modal-body mx-auto">
@@ -327,17 +327,17 @@
 
             <div class="form-group font-weight-bold">
               <input type="text" name="otp1" [(ngModel)]="otp1" maxlength="1"
-                class="border-otp  font-weight-bold  text-center" />
+                class="border-otp font-weight-bold text-center" (keyup)="keytab($event)" />
               <input type="text" name="otp2" [(ngModel)]="otp2" maxlength="1"
-                class="border-otp  font-weight-bold  text-center" />
+                class="border-otp font-weight-bold text-center" (keyup)="keytab($event)" />
               <input type="text" name="otp3" [(ngModel)]="otp3" maxlength="1"
-                class="border-otp  font-weight-bold  text-center" />
+                class="border-otp font-weight-bold text-center" (keyup)="keytab($event)" />
               <input type="text" name="otp4" [(ngModel)]="otp4" maxlength="1"
-                class="border-otp  font-weight-bold  text-center" />
+                class="border-otp font-weight-bold text-center" (keyup)="keytab($event)" />
               <input type="text" name="otp5" [(ngModel)]="otp5" maxlength="1"
-                class="border-otp  font-weight-bold  text-center" />
+                class="border-otp font-weight-bold text-center" (keyup)="keytab($event)" />
               <input type="text" name="otp6" [(ngModel)]="otp6" (keyup)="verifyOtp()" maxlength="1"
-                class="border-otp  font-weight-bold  text-center" />
+                class="border-otp font-weight-bold text-center" />
             </div>
 
           </form>

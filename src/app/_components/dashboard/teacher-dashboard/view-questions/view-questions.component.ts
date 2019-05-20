@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { User } from 'src/app/_models/user.model';
 import { Question } from 'src/app/_models/question.model';
 import { LocalStorageService } from 'src/app/_services/local-storage.service';
@@ -11,6 +11,11 @@ import { Group } from 'src/app/_models/group.model';
 import { Subject } from 'src/app/_models/subject.model';
 import { GroupService } from 'src/app/_services/group.service';
 import { QuestionResponseDto } from 'src/app/_dto/question-response.dto';
+import { NotificationService } from 'src/app/_services/notification.service';
+import { Observable } from 'rxjs';
+import { AngularFireUploadTask, AngularFireStorage } from 'angularfire2/storage';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { finalize } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-view-questions',
@@ -18,8 +23,10 @@ import { QuestionResponseDto } from 'src/app/_dto/question-response.dto';
 	styleUrls: [ './view-questions.component.css' ]
 })
 export class ViewQuestionsComponent implements OnInit {
+	imageUrlEdit: Observable<string>;
+	task: AngularFireUploadTask;
+	selectedFile: File;
 	imageUrl: string;
-	tempImageUrl = '';
 	subjectMap = new Map<string, Subject>();
 	isAllQuestions = false;
 	loggedInUser: User;
@@ -53,12 +60,16 @@ export class ViewQuestionsComponent implements OnInit {
 	quillModule = {
 		toolbar: this.toolbarOptions
 	};
+	@ViewChild('fileInput') fileInput: ElementRef;
 	constructor(
 		private localStorageService: LocalStorageService,
 		private quesRequestService: QuestionRequestService,
 		private utilityService: UtilityService,
 		private quesService: QuestionService,
-		private groupService: GroupService
+		private groupService: GroupService,
+		private notificationService: NotificationService,
+		private storage: AngularFireStorage,
+		private spinner: NgxSpinnerService
 	) {}
 
 	ngOnInit() {
@@ -168,21 +179,64 @@ export class ViewQuestionsComponent implements OnInit {
 		this.topicsSuggestions = this.subjectMap.get(this.tempSelectedQuestion.subject).tags;
 		this.chaptersSuggestions = this.subjectMap.get(this.tempSelectedQuestion.subject).topics;
 	}
+	onFileSelected(event) {
+		this.selectedFile = event.target.files[0];
+		if (this.selectedFile.type.split('/')[0] !== 'image') {
+			this.notificationService.showErrorWithTimeout('Only image files are supported!', null, 2000);
+			this.fileInput.nativeElement.value = '';
+			this.selectedFile = null;
+		}
+	}
 	updateQuestion() {
+		if (this.selectedFile) {
+			const path =
+				'intelliq/' +
+				this.loggedInUser.school.group.code +
+				'/' +
+				this.tempSelectedQuestion.std +
+				'/' +
+				this.tempSelectedQuestion.subject +
+				'/' +
+				new Date().getTime() +
+				'_' +
+				`${new Date().getTime()}_${this.selectedFile.name}`;
+
+			this.spinner.show();
+			this.task = this.storage.upload(path, this.selectedFile);
+			const ref = this.storage.ref(path);
+			//this.uploadPercent = this.task.percentageChanges();
+			this.task
+				.snapshotChanges()
+				.pipe(
+					finalize(() => {
+						this.imageUrlEdit = ref.getDownloadURL();
+						this.imageUrlEdit.subscribe((imageUrl) => {
+							this.saveQuestion(imageUrl);
+						});
+					})
+				)
+				.subscribe();
+		} else {
+			this.saveQuestion(null);
+		}
+	}
+	saveQuestion(imageUrl) {
 		var text = document.getElementById('quillContainer').textContent;
 		this.tempSelectedQuestion.title = text ? text.trim() : '';
 		this.tempSelectedQuestion.titleHtml = this.quillHtml;
-		if (this.tempImageUrl) {
-			this.tempSelectedQuestion.imageUrl = this.tempImageUrl;
+		if (imageUrl) {
+			this.tempSelectedQuestion.imageUrl = imageUrl;
 		}
 		this.quesRequestService.updateQuestion(this.tempSelectedQuestion).subscribe((response) => {
 			if (response) {
-				this.selectedQuestion = null;
 				this.editMode = false;
+				var queIndex = this.userQuestions.findIndex((q) => q.quesId === this.tempSelectedQuestion.quesId);
+				if (queIndex > -1) {
+					this.userQuestions[queIndex].imageUrl = imageUrl;
+				}
 			}
 		});
 	}
-
 	getOwner(question: Question) {
 		if (this.loggedInUser.school.code === question.school.code) {
 			return question.owner.userName;

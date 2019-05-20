@@ -13,6 +13,7 @@ import { NotificationService } from 'src/app/_services/notification.service';
 })
 export class SchoolUsersComponent implements OnInit {
 	users: User[];
+	loggedinUser: User;
 	searchTerm: string;
 	selectedRole = -1;
 	schoolId: string;
@@ -27,23 +28,19 @@ export class SchoolUsersComponent implements OnInit {
 		this.getUsers();
 	}
 	getUsers() {
-		this.schoolId = this.localStorageService.getCurrentUser().school.schoolId;
+		this.loggedinUser = this.localStorageService.getCurrentUser();
+		this.schoolId = this.loggedinUser.school.schoolId;
 		this.userService.getUsersBySchoolId(this.schoolId).subscribe((users: User[]) => {
 			this.users = users;
 		});
 	}
 	removeUser(user: User) {
+		debugger;
 		if (this.isAdmin(user)) {
 			user.roles = user.roles.filter(
 				(role) => role.roleType === RoleType.GROUPADMIN || role.roleType === RoleType.SCHOOLADMIN
 			);
-			this.userService.updateUser(user).subscribe((response) => {
-				if (response) {
-					this.users = this.users.filter(function(_user: User) {
-						return _user.userId !== user.userId;
-					});
-				}
-			});
+			this.userService.updateUserRoles(user).subscribe((response) => {});
 		} else {
 			this.userService
 				.removeUser(this.localStorageService.getCurrentUser().school.schoolId, user.userId)
@@ -105,5 +102,12 @@ export class SchoolUsersComponent implements OnInit {
 				);
 			}
 		});
+	}
+	showDeleteIcon(user: User) {
+		//user.userId !== loggedinUser.userId;
+		if (user.roles.find((role) => role.roleType > 2) && user.userId !== this.loggedinUser.userId) {
+			return true;
+		}
+		return false;
 	}
 }

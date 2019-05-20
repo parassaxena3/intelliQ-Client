@@ -89,6 +89,18 @@ export class UserService implements OnInit {
 			})
 		);
 	}
+	updateUserRoles(user: User) {
+		return this.restService.put('user/update/roles', user).pipe(
+			map((appResponse: AppResponse) => {
+				var result = this.utilityService.getAppResponse(appResponse, true, true);
+				if (result === null) {
+					return null;
+				}
+				// process result if required and return same
+				return result;
+			})
+		);
+	}
 	updateUserSchedule(user: User) {
 		return this.restService.put('user/updateSchedule', user).pipe(
 			map((appResponse: AppResponse) => {

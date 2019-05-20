@@ -18,8 +18,9 @@ hr {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  /* grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); */
   /* grid-template-columns: auto auto auto auto; */
+  grid-template-columns: repeat(auto-fit, 300px);
   grid-gap: 20px;
   padding: 10px;
   color: #fff;

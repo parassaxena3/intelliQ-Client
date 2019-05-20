@@ -273,16 +273,16 @@ export class GeneratePaperComponent implements OnInit {
 				testPaper.subject = this.selectedSubject.title;
 				testPaper.sets = this.questionPapers;
 				testPaper.tag = this.modalTag;
-				// testPaper.sets.forEach((set: QuestionPaperDto) => {
-				// 	set.sections.forEach((section: Section) => {
-				// 		var marks = this.selectedSections.find(
-				// 			(x) => this.utilityService.getSectionEnum(x.type) === section.type
-				// 		).marks;
-				// 		section.questions.forEach((question: Question) => {
-				// 			question.marks = marks;
-				// 		});
-				// 	});
-				// });
+				testPaper.sets.forEach((set: QuestionPaperDto) => {
+					set.sections.forEach((section: Section) => {
+						var marks = this.allSections.find(
+							(x) => this.utilityService.getSectionEnum(x.type) === section.type
+						).marks;
+						section.questions.forEach((question: Question) => {
+							question.marks = marks;
+						});
+					});
+				});
 			}
 		}
 		var testDto = new TestDto(null, testPaper);
@@ -332,6 +332,18 @@ export class GeneratePaperComponent implements OnInit {
 				}
 			});
 	}
+	deleteDraft() {
+		this.questionPaperService
+			.deleteDraft(this.loggedInUser.school.group.code, this.selectedDraft)
+			.subscribe((response) => {
+				if (response) {
+					this.draftsArray = this.draftsArray.filter((x) => x.testId !== this.selectedDraft);
+					this.loadedDraft = null;
+					this.questionPapers = null;
+					this.selectedDraft = '';
+				}
+			});
+	}
 	fetchTemplate() {
 		this.questionPaperService
 			.fetchTemplate(this.loggedInUser.school.group.code, this.selectedTemplateId)
@@ -340,7 +352,16 @@ export class GeneratePaperComponent implements OnInit {
 				this.setTemplateForm();
 			});
 	}
-
+	deleteTemplate() {
+		this.questionPaperService
+			.deleteTemplate(this.loggedInUser.school.group.code, this.selectedTemplateId)
+			.subscribe((response) => {
+				if (response) {
+					this.templatesArray = this.templatesArray.filter((x) => x.templateId !== this.selectedTemplateId);
+					this.resetTemplateForm();
+				}
+			});
+	}
 	setTemplateForm() {
 		var template = this.loadedTemplate;
 		if (template) {

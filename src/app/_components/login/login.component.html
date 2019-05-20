@@ -7,17 +7,50 @@
     </div>
 
     <div class="card-body">
-      <form autocomplete="off" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="mobile">Mobile:</label>
-          <input type="text" [(ngModel)]="mobile" name="mobile" id="mobile" maxlength="10" class="form-control" />
-          <!-- <div class="text-danger">Please fill out this field.</div> -->
+      <form autocomplete="off" #loginForm="ngForm" (ngSubmit)="onSubmit()">
+
+        <label for="mobile">Mobile:</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend" data-balloon="Mobile Number" data-balloon-pos="left">
+            <span class="input-group-text bg-dark text-white">
+              <i class="fas fa-mobile-alt mx-auto"></i>
+            </span>
+          </div>
+          <input type="text" name="nMobile" placeholder="Mobile" id="mobile" class="form-control" [(ngModel)]="mobile"
+            #nMobile="ngModel" required minlength="10" maxlength="10" pattern="[1-9]{1}[0-9]*">
+          <div *ngIf="nMobile.invalid && (nMobile.dirty || nMobile.touched)" class="invalid-feedback">
+            <div *ngIf="nMobile.errors.required">
+              Mobile Number is required.
+            </div>
+            <div *ngIf="nMobile.errors.minlength">
+              Mobile Number must be 10 digits .
+            </div>
+            <div *ngIf="nMobile.errors.pattern">
+              Only numbers are allowed with non-zero 1st digit
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="pwd">Password:</label>
-          <input type="password" [(ngModel)]="password" name="pwd" id="pwd" class="form-control" />
+
+        <label for="pwd">Password:</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend" data-balloon="Password" data-balloon-pos="left">
+            <span class="input-group-text bg-dark text-white">
+              <i class="fas fa-unlock mx-auto"></i>
+            </span>
+          </div>
+          <input type="password" name="pwd" id="pwd" placeholder="Password" class="form-control" [(ngModel)]="password"
+            #pwd="ngModel" required minlength="8" maxlength="15">
+          <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="invalid-feedback">
+            <div *ngIf="pwd.errors.required">
+              Password is required.
+            </div>
+            <div *ngIf="pwd.errors.minlength">
+              Password must be between 8-15 characters .
+            </div>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Login</button>
+
+        <button type="submit" [disabled]="!loginForm.form.valid" class="btn btn-primary btn-block">Login</button>
       </form>
     </div>
 
@@ -64,7 +97,7 @@
       <div class="modal-content otp-box">
         <!-- Modal body -->
         <div class="modal-body mx-auto">
-          <span class="text-center text-white font-weight-lighter font-italic">
+          <span class="text-center text-white font-weight-lighter">
             <h3>OTP</h3>
           </span>
           <form autocomplete="off" class="form-inline ">

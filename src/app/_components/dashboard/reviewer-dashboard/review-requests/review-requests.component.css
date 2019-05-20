@@ -88,7 +88,7 @@
 
 
 .question-description-area {
-  overflow: auto;
+  overflow-y: auto;
   height: 200px;
   /* background-color: #e9ecf3 !important; */
   padding: 10px 0 0 10px !important;
@@ -106,4 +106,8 @@
 
 .difference-question {
   border-right: 5px solid #a94442;
+}
+
+.table-responsive {
+  overflow-x: hidden !important;
 }

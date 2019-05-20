@@ -5,13 +5,15 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalStorageService } from './local-storage.service';
 import { Role } from '../_models/role.model';
+import { RestService } from './rest.service';
 
 @Injectable()
 export class UtilityService {
 	constructor(
 		private notificationService: NotificationService,
 		private localStorageService: LocalStorageService,
-		private router: Router
+		private router: Router,
+		private restService: RestService
 	) {}
 
 	//Roles
@@ -186,5 +188,16 @@ export class UtilityService {
 
 	findRoleIndex(roles: Role[], roleType: RoleType) {
 		return roles.findIndex((x) => x.roleType === roleType);
+	}
+
+	getIconForGender(gender: string) {
+		switch (gender) {
+			case 'Male':
+				return 'fa-venus';
+			case 'Female':
+				return 'fa-mars';
+			default:
+				return 'venus-mars';
+		}
 	}
 }

@@ -21,17 +21,24 @@
     <div class="grid-container">
       <div *ngFor="let school of schools" class="card profile-card fixed-width">
 
-        <div class="card-body text-white font-weight-lighter font-italic" *ngIf="school">
-          <span><i class="fas fa-pencil-alt p-2 text-warning"></i>{{school.shortName}} </span><br />
-          <span><i class="fas fa-users p-2 text-warning"></i>{{school.code}}</span><br />
-          <span><i class="fas fa-school p-2 text-warning"></i>{{school.fullName | titlecase}}</span>
+        <div class="card-body text-white font-weight-lighter" *ngIf="school">
+          <span data-balloon-pos="down"
+            attr.data-balloon="{{(school.fullName?school.fullName:school.shortName)  | titlecase}}"
+            data-balloon-length="fit"><i
+              class="fas fa-school p-2
+              text-warning"></i>{{(school.fullName?school.fullName:school.shortName)  | trim:20 | titlecase}}</span><br>
+          <!-- <span><i class="fas fa-school p-2 text-warning"></i>{{school.shortName}} </span><br /> -->
+          <span data-balloon-pos="down" data-balloon="School Code" data-balloon-length="fit"><i
+              class="fas fa-users p-2 text-warning"></i>{{school.code}}</span><br />
           <hr style="border: 1px solid #e9ecf3;">
           <span><i
-              class="fas fa-phone p-2 text-warning"></i>{{school.contact.mobile.length>0?school.contact.mobile:'(Not Updated)'}}</span><br />
-          <span><i
               class="fas fa-phone p-2 text-warning"></i>{{school.contact.landline.length>0?school.contact.landline:'(Not Updated)'}}</span><br />
-          <span><i class="fas fa-envelope p-2
-              text-warning"></i>{{school.contact.email?school.contact.email:'(Not Updated)'}}</span><br />
+          <span><i
+              class="fas fa-mobile-alt p-2 text-warning"></i>{{school.contact.mobile.length>0?school.contact.mobile:'(Not Updated)'}}</span><br />
+          <span data-balloon-pos="down"
+            attr.data-balloon="{{(school.contact.email?school.contact.email:'(Not Updated)')}}"
+            data-balloon-length="fit"><i class="fas fa-envelope p-2
+              text-warning"></i>{{(school.contact.email?school.contact.email:'(Not Updated)') | trim:18 }}</span><br />
           <span><i class="fas fa-globe p-2
               text-warning"></i>{{school.contact.website?school.contact.website:'(Not Updated)'}}</span><br />
           <span><i class="fas fa-home p-2 text-warning"></i>{{school.address.city | titlecase}}</span><br />

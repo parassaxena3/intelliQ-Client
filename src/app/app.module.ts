@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { environment } from './../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -62,6 +65,7 @@ import { RolePipePipe } from './_pipes/role-pipe.pipe';
 import { TimetableComponent } from './_components/timetable/timetable.component';
 import { ViewTeachersComponent } from './_components/dashboard/reviewer-dashboard/view-teachers/view-teachers.component';
 import { SafePipe } from './_pipes/safe.pipe';
+import { FilterPipe } from './_pipes/filter.pipe';
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -99,7 +103,8 @@ import { SafePipe } from './_pipes/safe.pipe';
 		RolePipePipe,
 		TimetableComponent,
 		ViewTeachersComponent,
-		SafePipe
+		SafePipe,
+		FilterPipe
 	],
 	imports: [
 		BrowserModule,
@@ -117,7 +122,9 @@ import { SafePipe } from './_pipes/safe.pipe';
 		QuillModule,
 		AlertModule.forRoot(),
 		NgbModule,
-		TypeaheadModule.forRoot()
+		TypeaheadModule.forRoot(),
+		AngularFireModule.initializeApp(environment.firebase),
+		AngularFireStorageModule
 	],
 	providers: [
 		AuthGuard,

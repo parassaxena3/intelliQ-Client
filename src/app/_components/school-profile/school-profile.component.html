@@ -7,12 +7,13 @@
         <section class="icon-holder rounded-circle text-center mx-auto">
           <i class="fas fa-school fa-5x mx-auto p-3 "></i>
         </section>
-        <div class="card-body text-white font-weight-lighter font-italic" *ngIf="school">
-          <span><i class="fas fa-pencil-alt p-2 text-warning"></i>{{school.shortName}} ({{school.board}})</span><br />
+        <div class="card-body text-white font-weight-lighter" *ngIf="school">
+          <span><i class="fas fa-graduation-cap p-2 text-warning"></i>{{school.shortName}}
+            ({{school.board}})</span><br />
           <span><i class="fas fa-users p-2 text-warning"></i>{{school.group.code}}</span><br />
           <span><i class="fas fa-school p-2 text-warning"></i>{{school.fullName | titlecase}}</span>
           <hr style="border: 2px solid #e9ecf3;">
-          <span><i class="fas fa-phone p-2 text-warning"></i>{{school.contact.mobile}}</span><br />
+          <span><i class="fas fa-phone p-2 text-warning"></i>{{school.contact.landline}}</span><br />
           <span><i class="fas fa-envelope p-2 text-warning"></i>{{school.contact.email}}</span><br />
           <span><i class="fas fa-globe p-2 text-warning"></i>{{school.contact.website}}</span><br />
           <span><i class="fas fa-home p-2 text-warning"></i>{{school.address.city}}</span><br />
@@ -46,7 +47,7 @@
               <div class="col-md-6 offset-md-3">
                 <form autocomplete="off" #bioForm="ngForm" *ngIf="school" (ngSubmit)="updateSchool();">
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="School Name" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-school mx-auto"></i>
                       </span>
@@ -61,9 +62,9 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Board" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
-                        <i class="fas fa-graduation-cap mx-auto"></i>
+                        <i class="fas fa-qrcode mx-auto"></i>
                       </span>
                     </div>
                     <input placeholder="Board" type="text" name="board" class="form-control text-uppercase"
@@ -79,13 +80,18 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Standards" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-graduation-cap mx-auto"></i>
                       </span>
                     </div>
                     <input type="text" name="standards" placeholder="Standards" class="form-control"
-                      [(ngModel)]="school.stds">
+                      pattern="[0-9]{1,2}(,[0-9]{1,2})*" #standards="ngModel" [(ngModel)]="school.stds">
+                    <div *ngIf="standards.invalid && (standards.dirty || standards.touched)" class="invalid-feedback">
+                      <div *ngIf="standards.errors.pattern">
+                        Enter comma(,) separated standards (eg. 1,2,3)
+                      </div>
+                    </div>
                   </div>
 
                   <button [disabled]="!bioForm.form.valid" class="btn btn-warning btn-block text-white">Update</button>
@@ -103,7 +109,7 @@
                 <form autocomplete="off" #addressForm="ngForm" *ngIf="school" (ngSubmit)="updateSchool();">
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Area" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-home mx-auto"></i>
                       </span>
@@ -113,7 +119,7 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="City" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-city mx-auto"></i>
                       </span>
@@ -128,7 +134,7 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="State" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-university mx-auto"></i>
                       </span>
@@ -143,7 +149,7 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Pincode" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-map-marker mx-auto"></i>
                       </span>
@@ -172,7 +178,7 @@
               <div class="col-md-6 offset-md-3">
                 <form autocomplete="off" #contactForm="ngForm" *ngIf="school" (ngSubmit)="updateSchool();">
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Landline" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-tty mx-auto"></i>
                       </span>
@@ -182,7 +188,7 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Mobile" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-mobile-alt mx-auto"></i>
                       </span>
@@ -197,7 +203,7 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Email" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-at mx-auto"></i>
                       </span>
@@ -206,7 +212,7 @@
                       placeholder="Email">
                   </div>
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Website" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
                         <i class="fas fa-globe mx-auto"></i>
                       </span>
@@ -226,9 +232,9 @@
               <div class="col-md-6 offset-md-3">
                 <form autocomplete="off" #scheduleForm="ngForm" *ngIf="school" (ngSubmit)="updateSchool();">
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Working Days" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
-                        <i class="fas fa-school mx-auto"></i>
+                        <i class="fas fa-calendar mx-auto"></i>
                       </span>
                     </div>
                     <input placeholder="Working Days" type="number" min="1" max="7" name="workingDays"
@@ -245,9 +251,9 @@
                   </div>
 
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" data-balloon="Periods" data-balloon-pos="left">
                       <span class="input-group-text bg-dark text-white">
-                        <i class="fas fa-school mx-auto"></i>
+                        <i class="far fa-clock mx-auto"></i>
                       </span>
                     </div>
                     <input placeholder="Periods" type="number" min="1" max="9" name="periods" class="form-control"

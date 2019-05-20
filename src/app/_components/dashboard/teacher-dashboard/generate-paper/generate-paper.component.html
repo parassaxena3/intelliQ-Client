@@ -35,7 +35,7 @@
                     <div class="input-group ml-3">
                       <div class="input-group-prepend">
                         <span class="input-group-text">
-                          <i class="fas fa-graduation-cap"></i>
+                          <i class="fas fa-tasks"></i>
                         </span>
                       </div>
                       <select [disabled]="!templatesArray" class="form-control custom-select" name="templates"
@@ -48,7 +48,8 @@
                   </div>
                 </div>
                 <div class="col-md-2">
-                  <a class="badge badge-pill btn-danger p-2" data-balloon="Remove Template" data-balloon-pos="left">
+                  <a *ngIf="selectedTemplateId" class="badge badge-pill btn-danger p-2" data-balloon="Remove Template"
+                    data-balloon-pos="left" (click)="deleteTemplate()">
                     <i class="fas fa-trash-alt text-white"></i>
                   </a>
                 </div>
@@ -107,7 +108,7 @@
                         <div class="input-group mb-3">
                           <div class="input-group-prepend">
                             <span class="input-group-text">
-                              <i class="fas fa-box"></i>
+                              <i class="fas fa-copy"></i>
                             </span>
                           </div>
                           <select class="form-control custom-select" id="sets" [(ngModel)]="sets" name="sets">
@@ -126,7 +127,7 @@
                         <div class="input-group mb-3">
                           <div class="input-group-prepend">
                             <span class="input-group-text">
-                              <i class="fas fa-box"></i>
+                              <i class="fa-star" [ngClass]="{'far': !totalMarks,'fas':totalMarks}"></i>
                             </span>
                           </div>
                           <input type="number" name="marks" [(ngModel)]="totalMarks" class="form-control"
@@ -300,7 +301,7 @@
                     <div class="input-group ml-3">
                       <div class="input-group-prepend">
                         <span class="input-group-text">
-                          <i class="fas fa-graduation-cap"></i>
+                          <i class="fas fa-file-alt"></i>
                         </span>
                       </div>
                       <select [disabled]="!draftsArray" class="form-control custom-select" id="drafts" name="drafts"
@@ -312,7 +313,8 @@
                   </div>
                 </div>
                 <div class="offset-md-1 col-md-1">
-                  <a class="badge badge-pill btn-danger p-2" data-balloon="Remove Draft" data-balloon-pos="left">
+                  <a *ngIf="selectedDraft" class="badge badge-pill btn-danger p-2" data-balloon="Remove Draft"
+                    data-balloon-pos="left" (click)="deleteDraft()">
                     <i class="fas fa-trash-alt text-white"></i>
                   </a>
                 </div>
@@ -340,7 +342,7 @@
                   <!-- Questions -->
                   <div class="row mb-3 question-item" *ngFor="let question of section.questions; let cIndex = index">
                     <div class="col-md-1">
-                      <span class="badge badge-pill btn-warning hidden-control" data-balloon="Choose another question"
+                      <span class="badge badge-pill btn-dark hidden-control" data-balloon="Choose another question"
                         data-balloon-pos="right">
                         <a (click)="replaceClicked(pIndex,cIndex,question)" data-toggle="modal"
                           data-target="#replaceModal">
@@ -355,8 +357,7 @@
                       </div>
                     </div>
                     <div class="col-md-1">
-                      <span class="badge text-white p-1"
-                        [ngClass]="utilityService.getClassForDifficulty(question.difficulty)">
+                      <span class="badge bg-dark p-1 text-white">
                         {{utilityService.getDifficultyDesc(question.difficulty)}}</span>
                     </div>
                   </div>
@@ -372,7 +373,7 @@
                   </div>
                   <div class="offset-md-1 col-md-3">
                     <button class="btn bg-new text-white" (click)="setModalTitle('draft');testPaperStatus='save'"
-                      data-toggle="modal" data-target="#titleModal"> <i class="fas fa-cogs pr-2"></i>Finalize
+                      data-toggle="modal" data-target="#titleModal"> <i class="fas fa-lock pr-2"></i>Finalize
                       Paper</button>
                   </div>
                 </div>
@@ -412,8 +413,6 @@
 </div>
 
 
-
-
 <!-- Replace MODAL -->
 <div class="modal fade" id="replaceModal" *ngIf="showReplaceModal">
   <div class="modal-dialog modal-lg">
@@ -422,7 +421,7 @@
       <div class="modal-body" *ngIf="questionToReplace">
         <div class="row">
 
-        
+
           <div class="col-md-12">
             <div class="card question-card">
               <div class="card-header text-white text-center">
@@ -479,7 +478,7 @@
                         <div class="input-group mb-3">
                           <div class="input-group-prepend">
                             <span class="input-group-text">
-                              <i class="fas fa-book"></i>
+                              <i class="fas fa-layer-group"></i>
                             </span>
                           </div>
 

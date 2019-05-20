@@ -4,15 +4,15 @@
     <div class="offset-md-4 col-md-4">
       <div class="card profile-card">
         <section class="icon-holder rounded-circle text-center mx-auto">
-          <i class="fas fa-layer-group fa-5x mx-auto p-3 "></i>
+          <i class="fas fa-sitemap fa-5x mx-auto p-3 "></i>
         </section>
-        <div class="card-body text-white font-weight-lighter font-italic" *ngIf="group">
+        <div class="card-body text-white font-weight-lighter" *ngIf="group">
           <span data-balloon="Group Code" data-balloon-pos="left"><i
               class="fas fa-users p-2 text-warning"></i>{{group.code}}</span><br />
           <span data-balloon="Created On" data-balloon-pos="left"><i
-              class="fas fa-school p-2 text-warning"></i>{{group.createDate |  date: dateFormat}}</span><br>
-          <span data-balloon="Last Modified On" data-balloon-pos="left"><i
-              class="fas fa-school p-2 text-warning"></i>{{group.lastModifiedDate |  date: dateFormat}}</span><br>
+              class="fas fa-calendar p-2 text-warning"></i>{{group.createDate |  date: dateFormat}}</span>
+          <span data-balloon="Last Modified On" data-balloon-pos="left" class="pull-right"><i
+              class="fas fa-calendar p-2 text-warning"></i>{{group.lastModifiedDate |  date: dateFormat}}</span><br>
           <hr style="border: 2px solid #e9ecf3;">
           <div *ngIf="!editMode">
             <a class="pull-right text-yellow" (click)="editMode=true" data-balloon="Edit Subjects"
@@ -20,8 +20,6 @@
               <i class="fas fa-pencil-alt"></i>
             </a>
           </div>
-
-          <br>
 
           <div *ngIf="!editMode" class="text-white" style="font-size: 20px">
             <span *ngFor="let subject of group.subjects" class="badge bg-new mr-1">

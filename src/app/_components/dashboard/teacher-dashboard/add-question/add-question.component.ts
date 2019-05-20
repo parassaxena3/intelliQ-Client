@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { LocalStorageService } from 'src/app/_services/local-storage.service';
 import { User } from 'src/app/_models/user.model';
 import { Subject } from 'src/app/_models/subject.model';
@@ -11,18 +11,25 @@ import { QuestionRequestService } from 'src/app/_services/questionRequest.servic
 import { UtilityService } from 'src/app/_services/utility.service';
 import { QuestionCriteria } from 'src/app/_dto/question-criteria.dto';
 import { QuestionService } from 'src/app/_services/question.service';
-import { FormGroup, FormControl, NgForm } from '@angular/forms';
-import Quill from 'quill';
-import { timeout } from 'q';
+import { Quill } from 'quill';
 import { Group } from 'src/app/_models/group.model';
 import { GroupService } from 'src/app/_services/group.service';
-
+import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { NgForm } from '@angular/forms';
 @Component({
 	selector: 'app-add-question',
 	templateUrl: './add-question.component.html',
 	styleUrls: [ './add-question.component.css' ]
 })
 export class AddQuestionComponent implements OnInit {
+	showMath = false;
+	genericIntegrationInstance: any;
+	imageUrl: Observable<string>;
+	task: AngularFireUploadTask;
+	selectedFile: File;
 	quill: Quill;
 	quillHtml: string;
 	lastSearchTerm: string;
@@ -53,13 +60,16 @@ export class AddQuestionComponent implements OnInit {
 	quillModule = {
 		toolbar: this.toolbarOptions
 	};
+	@ViewChild('fileInput') fileInput: ElementRef;
 	constructor(
 		private localStorageService: LocalStorageService,
 		private notificationService: NotificationService,
 		private quesRequestService: QuestionRequestService,
 		private utilityService: UtilityService,
 		private quesService: QuestionService,
-		private groupService: GroupService
+		private groupService: GroupService,
+		private storage: AngularFireStorage,
+		private spinner: NgxSpinnerService
 	) {}
 
 	ngOnInit() {
@@ -73,8 +83,11 @@ export class AddQuestionComponent implements OnInit {
 				this.createSubjectTopicMap(group);
 			}
 		});
+		//window.initiateMathEditor();
 	}
-
+	toggleEditor() {
+		this.showMath = !this.showMath;
+	}
 	createSubjectTopicMap(group: Group) {
 		group.subjects.forEach((subject: Subject) => {
 			this.subjectMap.set(subject.title, subject);
@@ -102,9 +115,51 @@ export class AddQuestionComponent implements OnInit {
 		this.tagsSuggestions = this.subjectMap.get(this.selectedSubject.title).tags;
 		this.chaptersSuggestions = this.subjectMap.get(this.selectedSubject.title).topics;
 	}
+	onFileSelected(event) {
+		this.selectedFile = event.target.files[0];
+		if (this.selectedFile.type.split('/')[0] !== 'image') {
+			this.notificationService.showErrorWithTimeout('Only image files are supported!', null, 2000);
+			this.fileInput.nativeElement.value = '';
+			this.selectedFile = null;
+		}
+	}
 	addQuestion() {
+		if (this.selectedFile) {
+			const path =
+				'intelliq/' +
+				this.loggedInUser.school.group.code +
+				'/' +
+				this.selectedStd +
+				'/' +
+				this.selectedSubject.title +
+				'/' +
+				new Date().getTime() +
+				'_' +
+				`${new Date().getTime()}_${this.selectedFile.name}`;
+			this.spinner.show();
+			this.task = this.storage.upload(path, this.selectedFile);
+			const ref = this.storage.ref(path);
+			//this.uploadPercent = this.task.percentageChanges();
+			this.task
+				.snapshotChanges()
+				.pipe(
+					finalize(() => {
+						this.imageUrl = ref.getDownloadURL();
+						this.imageUrl.subscribe((imageUrl) => {
+							this.saveQuestion(imageUrl);
+						});
+					})
+				)
+				.subscribe();
+		} else {
+			this.saveQuestion(null);
+		}
+	}
+	saveQuestion(imageUrl) {
 		var text = document.getElementById('quillContainer').textContent;
 		this.question.title = text ? text.trim() : '';
+
+		//this.question.titleHtml = this.showMath ? window.getMathML() : this.quillHtml;
 		this.question.titleHtml = this.quillHtml;
 		this.question.groupCode = this.loggedInUser.school.group.code;
 		this.question.owner = new Contributer(this.loggedInUser.userId, this.loggedInUser.userName);
@@ -115,13 +170,17 @@ export class AddQuestionComponent implements OnInit {
 		this.question.school = this.getSchool(this.loggedInUser.school);
 		this.question.std = this.selectedStd;
 		this.question.subject = this.selectedSubject.title;
+		this.question.imageUrl = imageUrl;
 		this.quesRequestService.addQuestion(this.question).subscribe((response) => {
 			this.quillHtml = '';
 			this.question.imageUrl = '';
+			this.fileInput.nativeElement.value = null;
+			this.selectedFile = null;
+			this.question.tags = [];
+			this.tags = '';
 			//this.resetForm();
 		});
 	}
-
 	addTag(event) {
 		if (this.tags && this.tags.length > 2) {
 			{

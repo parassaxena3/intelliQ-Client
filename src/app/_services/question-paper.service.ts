@@ -44,6 +44,13 @@ export class QuestionPaperService {
 			})
 		);
 	}
+	deleteTemplate(groupCode: string, templateId: string) {
+		return this.restService.delete('paper/template/' + groupCode + '/' + templateId).pipe(
+			map((appResponse: AppResponse) => {
+				return this.utilityService.getAppResponse(appResponse, true, true);
+			})
+		);
+	}
 	fetchDrafts(groupCode: string, teacherId: string) {
 		return this.restService.get('paper/drafts/' + groupCode + '/' + teacherId).pipe(
 			map((appResponse: AppResponse) => {
@@ -60,6 +67,13 @@ export class QuestionPaperService {
 		return this.restService.get('paper/draft/' + groupCode + '/' + draftId).pipe(
 			map((appResponse: AppResponse) => {
 				return this.utilityService.getAppResponse(appResponse, true, false);
+			})
+		);
+	}
+	deleteDraft(groupCode: string, draftId: string) {
+		return this.restService.delete('paper/draft/' + groupCode + '/' + draftId).pipe(
+			map((appResponse: AppResponse) => {
+				return this.utilityService.getAppResponse(appResponse, true, true);
 			})
 		);
 	}

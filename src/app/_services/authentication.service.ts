@@ -7,6 +7,8 @@ import { ResponseStatus } from '../_models/enums';
 import { Router } from '@angular/router';
 import { NotificationService } from './notification.service';
 import { CookieService } from 'ngx-cookie-service';
+import { SchoolService } from './school.service';
+import { GroupService } from './group.service';
 
 @Injectable()
 export class AuthenticationService implements OnInit {
@@ -15,7 +17,9 @@ export class AuthenticationService implements OnInit {
 		private localStorageService: LocalStorageService,
 		private router: Router,
 		private notificationService: NotificationService,
-		private cookieService: CookieService
+		private cookieService: CookieService,
+		private schoolService: SchoolService,
+		private groupService: GroupService
 	) {
 		var user = this.localStorageService.getCurrentUser();
 		if (user) {
@@ -41,9 +45,10 @@ export class AuthenticationService implements OnInit {
 	logout(redirectToLogin: boolean) {
 		this.localStorageService.removeItemFromLocalStorage('user');
 		this.userService.userDetailsUpdated.next(null);
-
+		this.userService.userRoleUpdated.next(null);
 		this.userService.logout();
-
+		this.schoolService.schoolFetched.next(null);
+		this.groupService.groupFetched.next(null);
 		if (redirectToLogin) {
 			this.router.navigate([ '/login' ]);
 		}

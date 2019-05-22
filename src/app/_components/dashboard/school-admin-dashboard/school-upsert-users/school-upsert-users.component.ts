@@ -63,13 +63,15 @@ export class SchoolUpsertUsersComponent implements OnInit {
 				this.school = school;
 			}
 		});
+		this.getReviewers();
+	}
+	getReviewers() {
 		this.userService
 			.getUsersBySchoolIdAndRoleType(this.loggedUser.school.schoolId, RoleType.REVIEWER)
 			.subscribe((reviewers: User[]) => {
 				this.createReviewerMap(reviewers);
 			});
 	}
-
 	onMobileEntered() {
 		if (this.prevMobile === this.user.mobile || !this.user.mobile) {
 			return;
@@ -231,12 +233,14 @@ export class SchoolUpsertUsersComponent implements OnInit {
 			this.userService.updateUser(this.user).subscribe((response) => {
 				if (response && this.user.userId === this.loggedUser.userId) {
 					this.localStorageService.addItemToLocalStorage('user', this.user);
+					this.getReviewers();
 				}
 			});
 		} else {
 			this.userService.addUser(this.user).subscribe((response) => {
 				if (response) {
 					this.resetForm(true);
+					this.getReviewers();
 				}
 			});
 		}
@@ -248,34 +252,32 @@ export class SchoolUpsertUsersComponent implements OnInit {
 	}
 
 	createReviewerMap(reviewers: User[]) {
-		if (!this.reviewerMap) {
-			this.reviewerMap = new Map<number, Map<string, User[]>>();
-			reviewers.forEach((reviewer: User) => {
-				var roles = reviewer.roles;
-				roles.forEach((role: Role) => {
-					if (role.roleType === RoleType.REVIEWER) {
-						var stds = role.stds;
-						stds.forEach((standard: Standard) => {
-							var subjectMap: Map<string, User[]>;
-							if (this.reviewerMap.has(standard.std)) {
-								subjectMap = this.reviewerMap.get(standard.std);
-							} else {
-								subjectMap = new Map<string, User[]>();
+		this.reviewerMap = new Map<number, Map<string, User[]>>();
+		reviewers.forEach((reviewer: User) => {
+			var roles = reviewer.roles;
+			roles.forEach((role: Role) => {
+				if (role.roleType === RoleType.REVIEWER) {
+					var stds = role.stds;
+					stds.forEach((standard: Standard) => {
+						var subjectMap: Map<string, User[]>;
+						if (this.reviewerMap.has(standard.std)) {
+							subjectMap = this.reviewerMap.get(standard.std);
+						} else {
+							subjectMap = new Map<string, User[]>();
+						}
+						standard.subjects.forEach((subject: Subject) => {
+							var users: User[] = new Array();
+							if (subjectMap.has(subject.title)) {
+								users = subjectMap.get(subject.title);
 							}
-							standard.subjects.forEach((subject: Subject) => {
-								var users: User[] = new Array();
-								if (subjectMap.has(subject.title)) {
-									users = subjectMap.get(subject.title);
-								}
-								users.push(reviewer);
-								subjectMap.set(subject.title, users);
-							});
-							this.reviewerMap.set(standard.std, subjectMap);
+							users.push(reviewer);
+							subjectMap.set(subject.title, users);
 						});
-					}
-				});
+						this.reviewerMap.set(standard.std, subjectMap);
+					});
+				}
 			});
-		}
+		});
 	}
 
 	setReviewer() {

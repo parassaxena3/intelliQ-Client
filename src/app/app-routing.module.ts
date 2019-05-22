@@ -28,6 +28,7 @@ import { ReviewRequestsComponent } from './_components/dashboard/reviewer-dashbo
 import { ViewQuestionPaperComponent } from './_components/dashboard/teacher-dashboard/view-question-paper/view-question-paper.component';
 import { TimetableComponent } from './_components/timetable/timetable.component';
 import { ViewTeachersComponent } from './_components/dashboard/reviewer-dashboard/view-teachers/view-teachers.component';
+import { RoleGuard } from './_guards/role.guard';
 
 const routes: Routes = [
 	{
@@ -38,7 +39,7 @@ const routes: Routes = [
 			{
 				path: 'super-admin',
 				component: SuperAdminDashboardComponent,
-				canActivate: [ AuthGuard ],
+				canActivate: [ AuthGuard, RoleGuard ],
 				children: [
 					{ path: '', redirectTo: 'group', pathMatch: 'full' },
 					{ path: 'group', component: AddGroupComponent, canActivate: [ AuthGuard ] },
@@ -50,7 +51,7 @@ const routes: Routes = [
 			{
 				path: 'group-admin',
 				component: GroupAdminDashboardComponent,
-				canActivate: [ AuthGuard ],
+				canActivate: [ AuthGuard, RoleGuard ],
 				children: [
 					{ path: '', redirectTo: 'profile', pathMatch: 'full' },
 					{ path: 'profile', component: GroupProfileComponent, canActivate: [ AuthGuard ] },
@@ -60,7 +61,7 @@ const routes: Routes = [
 			{
 				path: 'school-admin',
 				component: SchoolAdminDashboardComponent,
-				canActivate: [ AuthGuard ],
+				canActivate: [ AuthGuard, RoleGuard ],
 				children: [
 					{ path: '', redirectTo: 'users/view', pathMatch: 'full' },
 					{ path: 'users/view', component: SchoolUsersComponent, canActivate: [ AuthGuard ] },
@@ -70,7 +71,7 @@ const routes: Routes = [
 			{
 				path: 'reviewer',
 				component: ReviewerDashboardComponent,
-				canActivate: [ AuthGuard ],
+				canActivate: [ AuthGuard, RoleGuard ],
 				children: [
 					{ path: '', redirectTo: 'view-teachers', pathMatch: 'full' },
 					{ path: 'view-teachers', component: ViewTeachersComponent, canActivate: [ AuthGuard ] },
@@ -80,7 +81,7 @@ const routes: Routes = [
 			{
 				path: 'teacher',
 				component: TeacherDashboardComponent,
-				canActivate: [ AuthGuard ],
+				canActivate: [ AuthGuard, RoleGuard ],
 				children: [
 					{ path: '', redirectTo: 'add-question', pathMatch: 'full' },
 					{ path: 'add-question', component: AddQuestionComponent, canActivate: [ AuthGuard ] },
@@ -98,8 +99,8 @@ const routes: Routes = [
 	{ path: 'roles', component: RoleSelectionComponent, canActivate: [ AuthGuard ] },
 	{ path: 'login', component: LoginComponent },
 	{ path: 'profile', component: UserProfileComponent, canActivate: [ AuthGuard ] },
-	{ path: 'school-profile', component: SchoolProfileComponent, canActivate: [ AuthGuard ] },
-	{ path: 'timetable', component: TimetableComponent, canActivate: [ AuthGuard ] },
+	{ path: 'school-profile', component: SchoolProfileComponent, canActivate: [ AuthGuard, RoleGuard ] },
+	{ path: 'timetable', component: TimetableComponent, canActivate: [ AuthGuard, RoleGuard ] },
 	{ path: 'not-found', component: PageNotFoundComponent },
 	{ path: '**', redirectTo: 'not-found' }
 ];

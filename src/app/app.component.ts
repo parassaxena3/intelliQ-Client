@@ -28,7 +28,9 @@ export class AppComponent implements OnInit {
 				this.loggedIn = user ? true : false;
 				if (user) {
 					this.showSchoolProfile = !(
-						user.roles.length === 1 && user.roles[0].roleType === RoleType.GROUPADMIN
+						user.roles.length === 1 &&
+						(user.roles[0].roleType === RoleType.GROUPADMIN ||
+							user.roles[0].roleType === RoleType.SUPERADMIN)
 					);
 					this.showTimetable = user.roles.findIndex((role) => role.roleType === RoleType.TEACHER) > -1;
 				}

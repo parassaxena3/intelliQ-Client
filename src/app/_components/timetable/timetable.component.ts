@@ -25,7 +25,7 @@ export class TimetableComponent implements OnInit {
 		this.schoolService.getSchoolBySchoolCode(this.user.school.code).subscribe((school: School) => {
 			if (school) {
 				this.school = school;
-				this.user.days = this.user.days ? this.user.days : Constants.SCHEDULE;
+				this.user.days = this.user.days && this.user.days.length !== 0 ? this.user.days : Constants.SCHEDULE;
 			}
 		});
 	}

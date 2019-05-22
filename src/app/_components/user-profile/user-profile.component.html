@@ -130,7 +130,7 @@
                     </div>
                     <input type="text" class="form-control" [(ngModel)]="dob" name="dob" title="DOB" placeholder="DOB"
                       bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' ,adaptivePosition: true,containerClass:
-                      'theme-default'}">
+                      'theme-default'}" [minDate]="minDate" [maxDate]="maxDate">
                   </div>
 
                   <button type="submit" [disabled]="!profileForm.form.valid"

@@ -39,12 +39,11 @@ export class ViewRequestsComponent implements OnInit {
 	quillHtml: string;
 	toolbarOptions = [
 		[ 'bold', 'italic', 'underline' ], // toggled buttons
-		[ 'code-block' ],
 
 		[ { list: 'ordered' }, { list: 'bullet' } ],
 		[ { script: 'sub' }, { script: 'super' } ], // superscript/subscript
 
-		[ { size: [ 'small', false, 'large', 'huge' ] } ], // custom dropdown
+		[ { size: [ 'small', false, 'large' ] } ], // custom dropdown
 
 		[ { align: [] } ],
 

@@ -17,6 +17,8 @@ import { Standard } from 'src/app/_models/standard.model';
 })
 export class UserProfileComponent implements OnInit {
 	dob: Date;
+	minDate: Date;
+	maxDate: Date;
 	hideModal: boolean;
 	otp1: string;
 	otp2: string;
@@ -47,6 +49,8 @@ export class UserProfileComponent implements OnInit {
 
 	ngOnInit() {
 		this.user = this.localStorageService.getCurrentUser();
+		this.minDate = new Date(1940, 1, 1);
+		this.maxDate = new Date();
 		this.dob = new Date(this.user.dob);
 		var index = this.user.name.indexOf(' ');
 		this.firstName = this.user.name.substring(0, index);

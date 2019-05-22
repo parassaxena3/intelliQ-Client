@@ -65,7 +65,11 @@ export class AddAdminComponent implements OnInit {
 	findUser() {
 		if (this.mobile && this.mobile.length === 10) {
 			this.userService.getUserInfo('mobile', this.mobile).subscribe((user: User) => {
-				if (user && user.school.schoolId && user.school.group.groupId !== this.selectedGroup.groupId) {
+				if (
+					this.adminType !== 'superAdmin' &&
+					user.school.schoolId &&
+					user.school.group.groupId !== this.selectedGroup.groupId
+				) {
 					this.notificationService.showErrorWithTimeout(
 						'User is not part of group ' + this.selectedGroup.code,
 						null,
@@ -97,6 +101,8 @@ export class AddAdminComponent implements OnInit {
 			if (this.adminType === 'schoolAdmin') {
 				roleType = RoleType.SCHOOLADMIN;
 				school = this.selectedSchool;
+			} else if (this.adminType === 'superAdmin') {
+				roleType = RoleType.SUPERADMIN;
 			} else {
 				roleType = RoleType.GROUPADMIN;
 				school = new School();

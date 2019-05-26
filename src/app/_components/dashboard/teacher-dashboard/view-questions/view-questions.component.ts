@@ -93,26 +93,31 @@ export class ViewQuestionsComponent implements OnInit {
 		this.tags = '';
 	}
 	addTag(event) {
-		if (this.tags && this.tags.length > 2) {
+		var trimmedTag = this.tags.trim().toLowerCase();
+		if (trimmedTag.length > 1 && trimmedTag[trimmedTag.length - 1] === ',') {
+			trimmedTag = trimmedTag.slice(0, trimmedTag.length - 1);
+		}
+		if (
+			this.tags &&
+			this.tags.length > 2 &&
+			this.tempSelectedQuestion.tags.findIndex((tag) => tag.toLowerCase() === trimmedTag.toLowerCase()) === -1
+		) {
 			{
 				if (event.keyCode === 188 || event.keyCode === 13) {
 					// normal keypress
-					this.tags = this.tags.trim();
-					if (this.tags[this.tags.length - 1] === ',') {
-						this.tags = this.tags.slice(0, this.tags.length - 1);
-					}
-					this.tempSelectedQuestion.tags.push(this.tags);
+					this.tempSelectedQuestion.tags.push(trimmedTag);
+					this.topicsSuggestions = this.topicsSuggestions.filter((x) => x.toLowerCase() !== trimmedTag);
 					this.tags = '';
 				} else if (event.item) {
 					// from typeahead
-					this.tempSelectedQuestion.tags.push(this.tags);
-					this.topicsSuggestions = this.topicsSuggestions.filter((x) => x !== this.tags);
+					this.tempSelectedQuestion.tags.push(event.item.toLowerCase());
+					this.topicsSuggestions = this.topicsSuggestions.filter((x) => x !== event.item.toLowerCase());
 					this.tags = '';
 				} else if (event.type === 'blur') {
 					//blur
 					this.tags = this.tags.trim();
-					this.tempSelectedQuestion.tags.push(this.tags);
-					this.topicsSuggestions = this.topicsSuggestions.filter((x) => x !== this.tags);
+					this.tempSelectedQuestion.tags.push(trimmedTag);
+					this.topicsSuggestions = this.topicsSuggestions.filter((x) => x !== trimmedTag);
 					this.tags = '';
 				}
 			}

@@ -173,9 +173,9 @@ body {
 
 .ql-editor {
   word-break: break-all;
+  white-space: pre-line !important;
   border-right: none !important;
 }
-
 
 ::-webkit-scrollbar {
   width: 10px;

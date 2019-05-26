@@ -175,32 +175,42 @@ export class AddQuestionComponent implements OnInit {
 			this.question.imageUrl = '';
 			this.fileInput.nativeElement.value = null;
 			this.selectedFile = null;
+			this.tagsSuggestions = this.tagsSuggestions.concat(...this.question.tags);
 			this.question.tags = [];
 			this.tags = '';
+			this.suggestedQuestions = [];
+			this.lastSearchTerm = '';
 			//this.resetForm();
 		});
 	}
 	addTag(event) {
-		if (this.tags && this.tags.length > 2) {
+		var trimmedTag = this.tags.trim().toLowerCase();
+		if (trimmedTag.length > 1 && trimmedTag[trimmedTag.length - 1] === ',') {
+			trimmedTag = trimmedTag.slice(0, trimmedTag.length - 1);
+		}
+		if (
+			this.tags &&
+			this.tags.length > 2 &&
+			this.question.tags.findIndex((tag) => tag.toLowerCase() === trimmedTag.toLowerCase()) === -1
+		) {
 			{
 				if (event.keyCode === 188 || event.keyCode === 13) {
 					// normal keypress
-					this.tags = this.tags.trim();
-					if (this.tags.length > 1 && this.tags[this.tags.length - 1] === ',') {
-						this.tags = this.tags.slice(0, this.tags.length - 1);
-					}
-					this.question.tags.push(this.tags);
+					this.question.tags.push(trimmedTag);
+					this.tagsSuggestions = this.tagsSuggestions.filter((x) => x.toLowerCase() !== trimmedTag);
 					this.tags = '';
 				} else if (event.item) {
 					// from typeahead
-					this.question.tags.push(this.tags);
-					this.tagsSuggestions = this.tagsSuggestions.filter((x) => x !== this.tags);
+					this.question.tags.push(event.item.toLowerCase());
+					this.tagsSuggestions = this.tagsSuggestions.filter(
+						(x) => x.toLowerCase() !== event.item.toLowerCase()
+					);
 					this.tags = '';
 				} else if (event.type === 'blur') {
 					//blur
 					this.tags = this.tags.trim();
-					this.question.tags.push(this.tags);
-					this.tagsSuggestions = this.tagsSuggestions.filter((x) => x !== this.tags);
+					this.question.tags.push(trimmedTag);
+					this.tagsSuggestions = this.tagsSuggestions.filter((x) => x.toLowerCase() !== trimmedTag);
 					this.tags = '';
 				}
 			}
@@ -224,11 +234,12 @@ export class AddQuestionComponent implements OnInit {
 		this.question.tags = [];
 		this.fileInput.nativeElement.value = null;
 		this.selectedFile = null;
+		this.suggestedQuestions = [];
 	}
 	getSuggestions(event) {
 		var text = document.getElementById('quillContainer').textContent;
 		var searchTerm = text ? text.trim() : '';
-		if (event.keyCode !== 32) {
+		if (event.type === 'keyup' && event.keyCode !== 32) {
 			if (searchTerm.length < 3) {
 				this.suggestedQuestions = [];
 				this.lastSearchTerm = '';
@@ -243,6 +254,9 @@ export class AddQuestionComponent implements OnInit {
 				searchTerm
 			);
 			this.quesService.getSuggestions(questionCriteria).subscribe((questions: Question[]) => {
+				questions.forEach((x) => {
+					x.titleHtml = x.titleHtml.replace(/(51, 51, 51)/g, '(255, 255, 255)');
+				});
 				this.suggestedQuestions = questions;
 				this.lastSearchTerm = searchTerm;
 			});

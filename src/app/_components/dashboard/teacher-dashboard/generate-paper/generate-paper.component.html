@@ -49,7 +49,7 @@
                 </div>
                 <div class="col-md-2">
                   <a *ngIf="selectedTemplateId" class="badge badge-pill btn-danger p-2" data-balloon="Remove Template"
-                    data-balloon-pos="left" (click)="deleteTemplate()">
+                    data-balloon-pos="left" (click)="showConfirmation(modaltemplate)">
                     <i class="fas fa-trash-alt text-white"></i>
                   </a>
                 </div>
@@ -314,7 +314,7 @@
                 </div>
                 <div class="offset-md-1 col-md-1">
                   <a *ngIf="selectedDraft" class="badge badge-pill btn-danger p-2" data-balloon="Remove Draft"
-                    data-balloon-pos="left" (click)="deleteDraft()">
+                    data-balloon-pos="left" (click)="showConfirmation(modaltemplate)">
                     <i class="fas fa-trash-alt text-white"></i>
                   </a>
                 </div>
@@ -540,3 +540,12 @@
     </div>
   </div>
 </div>
+
+<!-- Delete Confirm Modal -->
+<ng-template #modaltemplate>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to remove this paper?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+  </div>
+</ng-template>

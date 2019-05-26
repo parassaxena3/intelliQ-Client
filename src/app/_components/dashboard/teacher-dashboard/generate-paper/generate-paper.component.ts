@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { User } from 'src/app/_models/user.model';
 import { Standard } from 'src/app/_models/standard.model';
 import { Subject } from 'src/app/_models/subject.model';
 import { LocalStorageService } from 'src/app/_services/local-storage.service';
 import { UtilityService } from 'src/app/_services/utility.service';
-import { RoleType, LengthType, DifficultyType } from 'src/app/_models/enums';
+import { RoleType } from 'src/app/_models/enums';
 import { GroupService } from 'src/app/_services/group.service';
 import { Group } from 'src/app/_models/group.model';
 import { QuesLength, QuestionCriteria, QuesDifficulty } from 'src/app/_dto/question-criteria.dto';
@@ -14,9 +14,9 @@ import { NotificationService } from 'src/app/_services/notification.service';
 import { TestDto } from 'src/app/_dto/test.dto.';
 import { TestPaper } from 'src/app/_models/testpaper.model';
 import { Template } from 'src/app/_models/template.model';
-import { Observable } from 'rxjs';
 import { Question } from 'src/app/_models/question.model';
 import { QuestionService } from 'src/app/_services/question.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 @Component({
 	selector: 'app-generate-paper',
@@ -67,14 +67,15 @@ export class GeneratePaperComponent implements OnInit {
 	testPaperStatus = 'draft';
 	replaceCriteriaModel: { type: string; totalQues: number; marks: number };
 	chaptersSuggestions: string[];
-
+	modalRef: BsModalRef;
 	constructor(
 		private notificationService: NotificationService,
 		private localStorageService: LocalStorageService,
 		private groupService: GroupService,
 		private utilityService: UtilityService,
 		private questionPaperService: QuestionPaperService,
-		private questionService: QuestionService
+		private questionService: QuestionService,
+		private modalService: BsModalService
 	) {}
 
 	ngOnInit() {
@@ -332,17 +333,10 @@ export class GeneratePaperComponent implements OnInit {
 				}
 			});
 	}
-	deleteDraft() {
-		this.questionPaperService
-			.deleteDraft(this.loggedInUser.school.group.code, this.selectedDraft)
-			.subscribe((response) => {
-				if (response) {
-					this.draftsArray = this.draftsArray.filter((x) => x.testId !== this.selectedDraft);
-					this.loadedDraft = null;
-					this.questionPapers = null;
-					this.selectedDraft = '';
-				}
-			});
+	showConfirmation(template: TemplateRef<any>) {
+		this.modalRef = this.modalService.show(template, {
+			class: 'modal-md modal-dialog-centered'
+		});
 	}
 	fetchTemplate() {
 		this.questionPaperService
@@ -352,15 +346,35 @@ export class GeneratePaperComponent implements OnInit {
 				this.setTemplateForm();
 			});
 	}
-	deleteTemplate() {
-		this.questionPaperService
-			.deleteTemplate(this.loggedInUser.school.group.code, this.selectedTemplateId)
-			.subscribe((response) => {
-				if (response) {
-					this.templatesArray = this.templatesArray.filter((x) => x.templateId !== this.selectedTemplateId);
-					this.resetTemplateForm();
-				}
-			});
+	confirm(): void {
+		if (this.activeTab === 'showPaper') {
+			this.questionPaperService
+				.deleteDraft(this.loggedInUser.school.group.code, this.selectedDraft)
+				.subscribe((response) => {
+					if (response) {
+						this.draftsArray = this.draftsArray.filter((x) => x.testId !== this.selectedDraft);
+						this.loadedDraft = null;
+						this.questionPapers = null;
+						this.selectedDraft = '';
+					}
+				});
+		} else if (this.activeTab === 'criteria') {
+			this.questionPaperService
+				.deleteTemplate(this.loggedInUser.school.group.code, this.selectedTemplateId)
+				.subscribe((response) => {
+					if (response) {
+						this.templatesArray = this.templatesArray.filter(
+							(x) => x.templateId !== this.selectedTemplateId
+						);
+						this.resetTemplateForm();
+					}
+				});
+		}
+		this.modalRef.hide();
+	}
+
+	decline(): void {
+		this.modalRef.hide();
 	}
 	setTemplateForm() {
 		var template = this.loadedTemplate;

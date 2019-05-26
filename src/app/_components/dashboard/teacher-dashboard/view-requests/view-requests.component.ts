@@ -134,7 +134,9 @@ export class ViewRequestsComponent implements OnInit {
 	deleteQuestion() {
 		this.quesRequestService.deleteQuestionRequest(this.selectedQuestion).subscribe((response) => {
 			if (response) {
-				document.getElementById(this.selectedQuestion.quesId).hidden = true;
+				this.rejectedQuestions = this.rejectedQuestions.filter(
+					(q) => q.quesId !== this.selectedQuestion.quesId
+				);
 				this.selectedQuestion = null;
 			}
 		});
@@ -156,6 +158,7 @@ export class ViewRequestsComponent implements OnInit {
 		}
 		this.quesRequestService.updateQuestion(this.tempSelectedQuestion).subscribe((response) => {
 			if (response) {
+				debugger;
 				this.rejectedQuestions = this.rejectedQuestions.filter(
 					(q) => q.quesId !== this.selectedQuestion.quesId
 				);

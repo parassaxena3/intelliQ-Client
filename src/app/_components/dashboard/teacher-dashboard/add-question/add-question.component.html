@@ -180,9 +180,9 @@
             <div class="input-group">
 
               <div class="quill-editor-div">
-                <quill-editor class="ql-editor" id="quillContainer" [disabled]="selectedSubject==null"
+                <quill-editor class="ql-editor" id="quillContainer" [readOnly]="selectedSubject==null"
                   [(ngModel)]="quillHtml" [modules]="quillModule" name="description" (keyup)="getSuggestions($event)"
-                  required #desc="ngModel">
+                  (focusout)="getSuggestions($event)" required #desc="ngModel">
                 </quill-editor>
               </div>
               <!-- <div [hidden]="!showMath">

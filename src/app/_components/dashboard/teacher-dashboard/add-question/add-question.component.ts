@@ -114,6 +114,7 @@ export class AddQuestionComponent implements OnInit {
 		this.tagsSuggestions = this.subjectMap.get(this.selectedSubject.title).tags;
 		this.chaptersSuggestions = this.subjectMap.get(this.selectedSubject.title).topics;
 	}
+
 	onFileSelected(event) {
 		this.selectedFile = event.target.files[0];
 		if (this.selectedFile.type.split('/')[0] !== 'image') {
@@ -256,6 +257,7 @@ export class AddQuestionComponent implements OnInit {
 			this.quesService.getSuggestions(questionCriteria).subscribe((questions: Question[]) => {
 				questions.forEach((x) => {
 					x.titleHtml = x.titleHtml.replace(/(51, 51, 51)/g, '(255, 255, 255)');
+					x.titleHtml = x.titleHtml.replace(/(color: black)/g, '(color: white)');
 				});
 				this.suggestedQuestions = questions;
 				this.lastSearchTerm = searchTerm;

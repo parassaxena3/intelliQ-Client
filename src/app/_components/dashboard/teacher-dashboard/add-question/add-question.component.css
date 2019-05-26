@@ -22,6 +22,7 @@
 .question-description-area {
   overflow: auto;
   max-height: 100px;
+  color: #fff !important;
 }
 
 .question-suggestion-area {

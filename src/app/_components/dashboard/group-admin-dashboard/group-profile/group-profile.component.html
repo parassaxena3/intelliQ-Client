@@ -1,0 +1,65 @@
+<div class="main-content container-fluid">
+  <div class="row">
+
+    <div class="offset-md-4 col-md-4">
+      <div class="card profile-card">
+        <section class="icon-holder rounded-circle text-center mx-auto">
+          <i class="fas fa-sitemap fa-5x mx-auto p-3 "></i>
+        </section>
+        <div class="card-body text-white font-weight-lighter" *ngIf="group">
+          <span data-balloon="Group Code" data-balloon-pos="left"><i
+              class="fas fa-users p-2 text-warning"></i>{{group.code}}</span><br />
+          <span data-balloon="Created On" data-balloon-pos="left"><i
+              class="fas fa-calendar-alt p-2 text-warning"></i>{{group.createDate |  date: dateFormat}}</span>
+          <span data-balloon="Last Modified On" data-balloon-pos="left" class="fa-pull-right"><i
+              class="fas fa-calendar-alt p-2 text-warning"></i>{{group.lastModifiedDate |  date: dateFormat}}</span><br>
+          <hr style="border: 2px solid #e9ecf3;">
+          <div *ngIf="!editMode">
+            <a class="fa-pull-right text-yellow" (click)="editMode=true" data-balloon="Edit Subjects"
+              data-balloon-pos="right">
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+          </div>
+
+          <div *ngIf="!editMode" class="text-white" style="font-size: 20px">
+            <span *ngFor="let subject of group.subjects" class="badge bg-new mr-1">
+              {{subject.title}}
+            </span>
+          </div>
+
+          <div *ngIf="editMode">
+            <div class="form-group">
+              <label for="subjects">Subjects:</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-book"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control text-title" placeholder="Subjects" id="subjects" name="subjects"
+                  [typeahead]="subjectSuggestions" (blur)="subject=''" (typeaheadOnSelect)="addSubject($event)"
+                  [(ngModel)]="subject">
+              </div>
+            </div>
+
+            <span class="badge bg-dark text-white mr-1 p-1 mb-1"
+              *ngFor="let subject of group.subjects">{{subject.title}}<i (click)="removeSubject(subject.title)"
+                class="fas fa-times clickable ml-1"></i></span>
+
+            <div class="row mt-3">
+              <div class="offset-md-3">
+                <button class="btn bg-remove text-white" (click)="onCancel();editMode=false;">
+                  <i class="fas fa-times text-white pr-2"></i>Cancel</button>
+              </div>
+              <div class="offset-md-1">
+                <button class="btn bg-new text-white" (click)='updateGroup();editMode=false;'>
+                  <i class="fas fa-save text-white pr-2"></i>Save</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

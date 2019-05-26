@@ -1,0 +1,48 @@
+.profile-card {
+  color: #0984e3;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+  background-color: #6c757d;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.profile-tab {
+  background: #e9ecf3;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 5px;
+  text-align: center;
+  color: #fff;
+}
+
+.icon-holder {
+  background: #e9ecf3;
+  padding: 20px;
+}
+
+
+.border-otp {
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  color: #343a40;
+  background-color: #ffffff40;
+  border: 1px solid #ffffff80;
+  font-size: 20px;
+  border-radius: 10px;
+  transition: 0.2s all;
+  outline: none;
+
+}
+
+.border-otp:hover {
+  border: 2px solid #fff;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.otp-box {
+  background-color: #ffffffaa;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
+}

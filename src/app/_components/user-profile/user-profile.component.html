@@ -1,0 +1,356 @@
+<div class="main-content container-fluid">
+
+  <div class="row">
+
+    <!--left profile-->
+    <div class="col-md-3 offset-md-1">
+
+      <div class="card profile-card">
+        <section class="icon-holder rounded-circle text-center mx-auto">
+          <i class="fas fa-user-tie fa-5x mx-auto p-3"></i>
+        </section>
+        <div class="card-body text-white font-weight-lighter">
+          <span><i class="fas fa-user p-2 text-warning"></i>{{user.userName}}</span><br />
+          <span><i class="fas fa-user-alt p-2 text-warning"></i>{{firstName}} {{lastName}}</span><br />
+          <span><i class="fas fa-mobile-alt p-2 text-warning"></i>{{user.mobile}}</span><br />
+          <span *ngIf="user.email"><i class="fas fa-envelope p-2 text-warning"></i>{{user.email}}<br /></span>
+          <span *ngIf="user.gender || user.dob"><i class="fas p-2 text-warning"
+              [ngClass]="utilityService.getIconForGender(user.gender)"></i>
+            <span *ngIf="user.gender!==''">{{user.gender}}</span>
+            <span *ngIf="calculateAge(user.dob)">
+              <span *ngIf="user.gender!==''">,</span>
+              {{calculateAge(user.dob)}} years</span>
+          </span>
+
+          <hr style="border: 2px solid #e9ecf3;">
+
+          <div class="text-white" style="font-size: 20px">
+            <span *ngFor="let role of user.roles" class="badge bg-new mr-1">
+              {{utilityService.getRoleDescriptionForDisplay(role.roleType)}}
+            </span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!--right profile-->
+    <div class="col-md-7">
+      <div class="card profile-card">
+        <ul class="nav nav-pills nav-justified">
+          <li class="nav-item">
+            <a class="nav-link active text-white" data-toggle="tab" href="#bio">Bio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" data-toggle="tab" href="#mobile">Mobile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" data-toggle="tab" href="#password">Password</a>
+          </li>
+          <li *ngIf="isReviewer" class="nav-item">
+            <a class="nav-link text-white" data-toggle="tab" href="#reviews">Reviews</a>
+          </li>
+          <li *ngIf="isTeacher" class="nav-item">
+            <a class="nav-link text-white" data-toggle="tab" href="#teaches">Teaches</a>
+          </li>
+
+        </ul>
+
+        <div class="tab-content profile-tab">
+          <div id="bio" class="container tab-pane active">
+            <div class="row">
+              <div class="col-md-6 offset-md-3">
+                <form autocomplete="off" #profileForm="ngForm" (ngSubmit)="updateUser();">
+
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend" data-balloon="First Name" data-balloon-pos="left">
+                      <span class="input-group-text bg-dark text-white">
+                        <i class="fas fa-user mx-auto"></i>
+                      </span>
+                    </div>
+                    <input type="text" name="fname" class="form-control text-title" [(ngModel)]="firstName" required
+                      minlength="3" maxlength="20" #fname="ngModel" placeholder="First Name">
+                    <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="invalid-feedback">
+                      <div *ngIf="fname.errors.required">
+                        First Name is required.
+                      </div>
+                      <div *ngIf="fname.errors.minlength">
+                        First Name must be at least 3 characters long.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend" data-balloon="Last Name" data-balloon-pos="left">
+                      <span class="input-group-text bg-dark text-white">
+                        <i class="fas fa-user mx-auto"></i>
+                      </span>
+                    </div>
+                    <input type="text" name="lname" class="form-control  text-title" placeholder="Last Name"
+                      [(ngModel)]="lastName" required maxlength="20" #lname="ngModel">
+                    <div *ngIf="lname.invalid && (lname.dirty || lname.touched)" class="invalid-feedback">
+                      <div *ngIf="lname.errors.required">
+                        Last Name is required.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend" data-balloon="Email" data-balloon-pos="left">
+                      <span class="input-group-text bg-dark text-white">
+                        <i class="fas fa-envelope mx-auto"></i>
+                      </span>
+                    </div>
+                    <input type="email" name="mail" class="form-control" [(ngModel)]="user.email" #mail="ngModel">
+                    <div *ngIf="mail.invalid && (mail.dirty || mail.touched)" class="invalid-feedback">
+                      <div *ngIf="mail.errors.email">
+                        Email should be of valid format
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend" data-balloon="Gender" data-balloon-pos="left">
+                      <span class="input-group-text bg-dark text-white">
+                        <i class="fas fa-mars mx-auto"></i>
+                      </span>
+                    </div>
+                    <select class="form-control custom-select" [(ngModel)]="user.gender" name="gender">
+                      <option disabled value="">Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend" data-balloon="Date Of Birth" data-balloon-pos="left">
+                      <span class="input-group-text bg-dark text-white">
+                        <i class="fas fa-calendar-alt mx-auto"></i>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control" [(ngModel)]="dob" name="dob" title="DOB" placeholder="DOB"
+                      bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' ,adaptivePosition: true,containerClass:
+                      'theme-default'}" [minDate]="minDate" [maxDate]="maxDate">
+                  </div>
+
+                  <button type="submit" [disabled]="!profileForm.form.valid"
+                    class="btn btn-warning btn-block text-white">Update</button>
+
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div id="mobile" class="container tab-pane fade">
+            <div class="row">
+              <div class="col-md-6 offset-md-3">
+                <form autocomplete="off" #mobileForm="ngForm" (ngSubmit)="generateOtp();"
+                  [appMustMatch]="['cMobile', 'nMobile','NO']">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend" data-balloon="Current Mobile" data-balloon-pos="left">
+                      <span class="input-group-text bg-dark text-white">
+                        <i class="fas fa-mobile-alt mx-auto"></i>
+                      </span>
+                    </div>
+                    <input type="text" name="cMobile" class="form-control" [(ngModel)]="user.mobile" #cMobile="ngModel"
+                      disabled>
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend" data-balloon="New Mobile" data-balloon-pos="left">
+                      <span class="input-group-text bg-dark text-white">
+                        <i class="fas fa-mobile-alt mx-auto"></i>
+                      </span>
+                    </div>
+                    <input type="text" name="nMobile" placeholder="New Number" class="form-control"
+                      [(ngModel)]="newMobile" #nMobile="ngModel" required minlength="10" maxlength="10"
+                      pattern="[1-9]{1}[0-9]*">
+                    <div *ngIf="nMobile.invalid && (nMobile.dirty || nMobile.touched)" class="invalid-feedback">
+                      <div *ngIf="nMobile.errors.required">
+                        Mobile Number is required.
+                      </div>
+                      <div *ngIf="nMobile.errors.minlength">
+                        Mobile Number must be 10 digits .
+                      </div>
+                      <div *ngIf="nMobile.errors.pattern">
+                        Only numbers are allowed with non-zero 1st digit
+                      </div>
+                      <div *ngIf="nMobile.errors.mustNotMatch">
+                        Cannot have same mobile number
+                      </div>
+
+                    </div>
+                  </div>
+                  <button [disabled]="!mobileForm.form.valid" data-toggle="modal" data-target="#myModal"
+                    class="btn btn-warning btn-block text-white">Get
+                    OTP</button>
+
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div id="password" class="container tab-pane fade">
+            <div class="row">
+              <div class="col-md-6 offset-md-3">
+                <form autocomplete="off" #pwdForm="ngForm" (ngSubmit)="updatePassword(pwdForm);"
+                  [appMustMatch]="['newPwd', 'confirmPwd','YES']">
+
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend" data-balloon="Old Password" data-balloon-pos="left">
+                      <span class="input-group-text bg-dark text-white">
+                        <i class="fas fa-unlock mx-auto"></i>
+                      </span>
+                    </div>
+                    <input type="password" name="oldPwd" placeholder="Old Password" class="form-control"
+                      [(ngModel)]="oldPassword" #oldPwd="ngModel" required minlength="8" maxlength="15">
+                    <div *ngIf="oldPwd.invalid && (oldPwd.dirty || oldPwd.touched)" class="invalid-feedback">
+                      <div *ngIf="oldPwd.errors.required">
+                        Password is required.
+                      </div>
+                      <div *ngIf="oldPwd.errors.minlength">
+                        Password must be between 8-15 characters .
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend" data-balloon="New Password" data-balloon-pos="left">
+                      <span class="input-group-text bg-dark text-white">
+                        <i class="fas fa-lock mx-auto"></i>
+                      </span>
+                    </div>
+                    <input type="password" name="newPwd" placeholder="New Password" class="form-control"
+                      [(ngModel)]="newPassword" #newPwd="ngModel" required minlength="8" maxlength="15">
+                    <div *ngIf="newPwd.invalid && (newPwd.dirty || newPwd.touched)" class="invalid-feedback">
+                      <div *ngIf="newPwd.errors.required">
+                        Password is required.
+                      </div>
+                      <div *ngIf="newPwd.errors.minlength">
+                        Password must be between 8-15 characters .
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend" data-balloon="Confirm Password" data-balloon-pos="left">
+                      <span class="input-group-text bg-dark text-white">
+                        <i class="fas fa-lock mx-auto"></i>
+                      </span>
+                    </div>
+                    <input type="password" name="confirmPwd" placeholder="Confirm Password" class="form-control"
+                      [(ngModel)]="confirmPassword" #confirmPwd="ngModel" required minlength="8" maxlength="15">
+                    <div *ngIf="confirmPwd.invalid && (confirmPwd.dirty || confirmPwd.touched)"
+                      class="invalid-feedback">
+                      <div *ngIf="confirmPwd.errors.required">
+                        Password is required.
+                      </div>
+                      <div *ngIf="confirmPwd.errors.minlength">
+                        Password must be between 8-15 characters .
+                      </div>
+                      <div *ngIf="confirmPwd.errors.mustMatch">
+                        Passwords do not match .
+                      </div>
+                    </div>
+                  </div>
+
+                  <button [disabled]="!pwdForm.form.valid" class="btn btn-warning btn-block text-white">Update</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div id="reviews" class="container tab-pane fade">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="table-responsive">
+                  <table class="table table-dark table-hover rounded-lg">
+                    <thead style="color: #ffc107">
+                      <tr>
+                        <th>Standard</th>
+                        <th>Subjects</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let standard of reviewerStds">
+                        <td>{{standard.std}}</td>
+                        <td>{{standard.subjects | csv:'title':'?'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="teaches" class="container tab-pane fade">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="table-responsive">
+                  <table class="table table-dark table-hover rounded-lg">
+                    <thead style="color: #ffc107">
+                      <tr>
+                        <th>Standard</th>
+                        <th>Subjects</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let standard of teacherStds">
+                        <td>{{standard.std}}</td>
+                        <td>{{standard.subjects | csv:'title':'?'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- OTP modal -->
+  <div class="modal fade" id="myModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-centered rounded-lg">
+      <div class="modal-content otp-box">
+        <div class="modal-header">
+          <span class="text-center text-dark font-weight-lighter">
+            <h5>OTP</h5>
+          </span>
+          <button type="button" class="close" data-dismiss="modal" #closeModal>&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body mx-auto">
+
+          <form autocomplete="off" class="form-inline ">
+
+            <div class="form-group font-weight-bold">
+              <input type="text" name="otp1" [(ngModel)]="otp1" maxlength="1"
+                class="border-otp font-weight-bold text-center" (keyup)="keytab($event)" />
+              <input type="text" name="otp2" [(ngModel)]="otp2" maxlength="1"
+                class="border-otp font-weight-bold text-center" (keyup)="keytab($event)" />
+              <input type="text" name="otp3" [(ngModel)]="otp3" maxlength="1"
+                class="border-otp font-weight-bold text-center" (keyup)="keytab($event)" />
+              <input type="text" name="otp4" [(ngModel)]="otp4" maxlength="1"
+                class="border-otp font-weight-bold text-center" (keyup)="keytab($event)" />
+              <input type="text" name="otp5" [(ngModel)]="otp5" maxlength="1"
+                class="border-otp font-weight-bold text-center" (keyup)="keytab($event)" />
+              <input type="text" name="otp6" [(ngModel)]="otp6" (keyup)="verifyOtp()" maxlength="1"
+                class="border-otp font-weight-bold text-center" />
+            </div>
+
+          </form>
+          <span class="text-center text-danger">
+            <h6>*All fields are required</h6>
+          </span>
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+</div>

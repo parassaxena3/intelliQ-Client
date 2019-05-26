@@ -1,0 +1,137 @@
+<div class="main-content container">
+  <!-- LOGIN CARD -->
+  <div class="card login-card mb-1" *ngIf="!forgotPassword">
+
+    <div class="card-header bg-dark text-white text-center">
+      <h3>Login to IntelliQ</h3>
+    </div>
+
+    <div class="card-body">
+      <form autocomplete="off" #loginForm="ngForm" (ngSubmit)="onSubmit()">
+
+        <label for="mobile">Mobile:</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend" data-balloon="Mobile Number" data-balloon-pos="left">
+            <span class="input-group-text bg-dark text-white">
+              <i class="fas fa-mobile-alt mx-auto"></i>
+            </span>
+          </div>
+          <input type="text" name="nMobile" placeholder="Mobile" id="mobile" class="form-control" [(ngModel)]="mobile"
+            #nMobile="ngModel" required minlength="10" maxlength="10" pattern="[1-9]{1}[0-9]*">
+          <div *ngIf="nMobile.invalid && (nMobile.dirty || nMobile.touched)" class="invalid-feedback">
+            <div *ngIf="nMobile.errors.required">
+              Mobile Number is required.
+            </div>
+            <div *ngIf="nMobile.errors.minlength">
+              Mobile Number must be 10 digits .
+            </div>
+            <div *ngIf="nMobile.errors.pattern">
+              Only numbers are allowed with non-zero 1st digit
+            </div>
+          </div>
+        </div>
+
+        <label for="pwd">Password:</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend" data-balloon="Password" data-balloon-pos="left">
+            <span class="input-group-text bg-dark text-white">
+              <i class="fas fa-unlock mx-auto"></i>
+            </span>
+          </div>
+          <input type="password" name="pwd" id="pwd" placeholder="Password" class="form-control" [(ngModel)]="password"
+            #pwd="ngModel" required minlength="8" maxlength="15">
+          <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="invalid-feedback">
+            <div *ngIf="pwd.errors.required">
+              Password is required.
+            </div>
+            <div *ngIf="pwd.errors.minlength">
+              Password must be between 8-15 characters .
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="!loginForm.form.valid" class="btn btn-primary btn-block">Login</button>
+      </form>
+    </div>
+
+    <div class="card-footer text-dark font-weight-lighter font-italic">
+      <a style="border: 2px;color: blue" class="nav-link clickable" (click)="forgotPassword=true">Forgot
+        Password ?</a>
+    </div>
+
+  </div>
+
+  <!-- FORGOT PWD CARD -->
+  <div class="card login-card mb-1" *ngIf="forgotPassword">
+
+    <div class="card-header bg-dark text-white text-center">
+      <h3>Forgot Password ?</h3>
+    </div>
+
+    <div class="card-body">
+      <form autocomplete="off">
+        <div class="form-group">
+          <label for="fmobile">Mobile:</label>
+          <input type="text" class="form-control" name="fmobile" id="fmobile">
+        </div>
+        <div class="form-group" hidden>
+          <label for="otp">OTP:</label>
+          <input type="text" class="form-control" name="otp" id="otp" maxlength="6">
+        </div>
+        <button type="button" class="btn bg-remove text-white" (click)="forgotPassword=false">
+          Cancel</button>
+        <button type="button" class="btn btn-primary fa-pull-right" data-toggle="modal" data-target="#myModal">Get
+          OTP</button>
+      </form>
+
+    </div>
+
+    <div class="card-footer text-dark font-weight-lighter
+ 	font-italic" style="border: 2px;"> OTP will be sent to your registered mobile number
+    </div>
+
+  </div>
+
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-lg modal-dialog-centered rounded-lg">
+      <div class="modal-content otp-box">
+        <!-- Modal body -->
+        <div class="modal-body mx-auto">
+          <span class="text-center text-white font-weight-lighter">
+            <h3>OTP</h3>
+          </span>
+          <form autocomplete="off" class="form-inline ">
+
+            <div class="form-group font-weight-bold">
+              <input type="text" maxlength="1" class="border-otp  font-weight-bold  text-center" />
+              <input type="text" maxlength="1" class="border-otp  font-weight-bold  text-center" />
+              <input type="text" maxlength="1" class="border-otp  font-weight-bold  text-center" />
+              <input type="text" maxlength="1" class="border-otp  font-weight-bold  text-center" />
+              <input type="text" maxlength="1" class="border-otp  font-weight-bold  text-center" />
+              <input type="text" maxlength="1" class="border-otp  font-weight-bold  text-center" />
+
+
+            </div>
+
+          </form>
+          <span class="text-center text-danger">
+            <h6>*All fields are required</h6>
+          </span>
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<!-- FOOTER -->
+<nav class="footer-bg navbar navbar-expand-sm  navbar-dark fixed-bottom justify-content-center">
+  <a class="navbar-brand" [routerLink]="['/login']">
+    <h5 class="font-weight-lighter font-italic text-dark">Handcrafted By Moltres</h5>
+  </a>
+</nav>

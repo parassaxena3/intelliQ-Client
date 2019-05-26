@@ -1,0 +1,189 @@
+<div class="row feature-content main-content">
+  <div class="col-xs-offset-3 col-xs-6">
+    <h4>Add New Admin:</h4>
+    <div class="form-group">
+      <select [disabled]="adminType!==''" class="form-control" [(ngModel)]="adminType" name="adminType">
+        <option value="" disabled selected>Select Admin Type</option>
+        <option value="superAdmin">Super Admin</option>
+        <option value="groupAdmin">Group Admin</option>
+        <option value="schoolAdmin">School Admin</option>
+      </select>
+    </div>
+
+    <div *ngIf="adminType">
+
+      <div *ngIf="adminType=='superAdmin'">
+        <form autocomplete="off">
+
+          <div class="form-group">
+            <input [disabled]="userSearchDone" type="text" class="form-control" maxlength="10" minlength="10"
+              placeholder="Mobile" [(ngModel)]="mobile" name="nMobile" pattern="[0-9]*" #nMobile="ngModel">
+            <div *ngIf="nMobile.invalid && (nMobile.dirty || nMobile.touched)" class="invalid-feedback">
+              <div *ngIf="nMobile.errors.required">
+                Mobile Number is required.
+              </div>
+              <div *ngIf="nMobile.errors.minlength">
+                Mobile Number must be 10 digits .
+              </div>
+              <div *ngIf="nMobile.errors.pattern">
+                Only numbers are allowed
+              </div>
+            </div>
+          </div>
+          <button *ngIf="!userSearchDone" [disabled]="nMobile.invaid" (click)="findUser()"
+            class="btn btn-primary fa-pull-left">Find User</button>
+          <div *ngIf="userSearchDone">
+            <div class="form-group">
+              <input [disabled]="selectedUser" type="text" class="form-control text-title" placeholder="Full Name"
+                [(ngModel)]="name" name="fname" #fname="ngModel" required pattern="[A-Za-z]{3,20}( [A-Za-z]{1,20}){1,4}"
+                maxlength="50">
+              <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="invalid-feedback">
+                <div *ngIf="fname.errors.required">
+                  Full Name is required.
+                </div>
+                <div *ngIf="fname.errors.pattern">
+                  firstname(3 - 20 chars) + lastname (1 - 20 chars)
+                </div>
+              </div>
+            </div>
+            <button *ngIf="!selectedUser" (click)="addUser()" [disabled]="fname.invalid"
+              class="btn btn-primary fa-pull-left">Add Super Admin</button>
+
+          </div>
+
+          <button class="btn btn-warning fa-pull-right" (click)="resetForm()">Reset Form</button>
+          <h4 class="invalid-feedback fa-pull-left" *ngIf="isAlreadySchoolAdmin">User is already a School Admin</h4>
+        </form>
+      </div>
+
+      <div *ngIf="adminType=='groupAdmin'">
+        <form autocomplete="off">
+          <div class="form-group">
+            <input [disabled]="selectedGroup" type="text" class="form-control text-uppercase" placeholder="Group Code"
+              [(ngModel)]="groupCode" name="groupcode" #groupcode="ngModel" minlength="4" required
+              pattern="[A-Za-z_]*" />
+            <div *ngIf="groupcode.invalid && (groupcode.dirty || groupcode.touched)" class="invalid-feedback">
+              <div *ngIf="groupcode.errors.required">
+                Group code is required.
+              </div>
+              <div *ngIf="groupcode.errors.minlength">
+                Atleast 4 characters are required
+              </div>
+              <div *ngIf="groupcode.errors.pattern">
+                Only letters (A-Z) with no space
+              </div>
+            </div>
+          </div>
+          <button *ngIf="!selectedGroup" [disabled]="groupcode.invalid" (click)="findGroup()"
+            class="btn btn-primary fa-pull-left">Find Group</button>
+
+          <div *ngIf="selectedGroup">
+            <div class="form-group">
+              <input [disabled]="userSearchDone" type="text" class="form-control" placeholder="Mobile"
+                [(ngModel)]="mobile" name="nMobile" pattern="[0-9]*" #nMobile="ngModel" minlength="10" maxlength="10">
+              <div *ngIf="nMobile.invalid && (nMobile.dirty || nMobile.touched)" class="invalid-feedback">
+                <div *ngIf="nMobile.errors.required">
+                  Mobile Number is required.
+                </div>
+                <div *ngIf="nMobile.errors.minlength">
+                  Mobile Number must be 10 digits .
+                </div>
+                <div *ngIf="nMobile.errors.pattern">
+                  Only numbers are allowed
+                </div>
+              </div>
+            </div>
+            <button *ngIf="!userSearchDone" [disabled]="nMobile.invalid" (click)="findUser()"
+              class="btn btn-primary fa-pull-left">Find User</button>
+
+            <div *ngIf="userSearchDone">
+              <div class="form-group">
+                <input [disabled]="selectedUser" type="text" class="form-control" placeholder="Name" [(ngModel)]="name"
+                  name="fname" #fname="ngModel" required pattern="[A-Za-z]{3,20}( [A-Za-z]{1,20}){1,4}" maxlength="60">
+                <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="invalid-feedback">
+                  <div *ngIf="fname.errors.required">
+                    Full Name is required.
+                  </div>
+                  <div *ngIf="fname.errors.pattern">
+                    firstname(3 - 20 chars) + lastname (1 - 20 chars)
+                  </div>
+                </div>
+              </div>
+              <button *ngIf="!selectedUser" (click)="addUser()" [disabled]="fname.invalid"
+                class="btn btn-primary fa-pull-left">Add Group Admin</button>
+              <button *ngIf="selectedUser && !isAlreadyGroupAdmin" (click)="assignRoleToUser()"
+                [disabled]="fname.invalid" class="btn btn-primary fa-pull-left">Assign Role</button>
+            </div>
+
+          </div>
+          <button class="btn btn-warning fa-pull-right" (click)="resetForm()">Reset Form</button>
+          <h4 class="invalid-feedback fa-pull-left" *ngIf="isAlreadyGroupAdmin">User is already a Group Admin</h4>
+        </form>
+      </div>
+
+      <div *ngIf="adminType=='schoolAdmin'">
+        <form autocomplete="off">
+          <div class="form-group">
+            <input [disabled]="selectedSchool" type="text" class="form-control text-uppercase" placeholder="School Code"
+              [(ngModel)]="schoolCode" #sCode="ngModel" name="sCode" required pattern="[A-Za-z0-9_]*">
+            <div *ngIf="sCode.invalid && (sCode.dirty || sCode.touched)" class="invalid-feedback">
+              <div *ngIf="sCode.errors.required">
+                School Code is required.
+              </div>
+              <div *ngIf="sCode.errors.pattern">
+                Only letters with no space
+              </div>
+            </div>
+          </div>
+          <button *ngIf="!selectedSchool" [disabled]="sCode.invalid" (click)="findSchool()"
+            class="btn btn-primary fa-pull-left">Find School</button>
+
+          <div *ngIf="selectedSchool">
+            <div class="form-group">
+              <input [disabled]="userSearchDone" type="text" class="form-control" maxlength="10" minlength="10"
+                placeholder="Mobile" [(ngModel)]="mobile" name="nMobile" pattern="[0-9]*" #nMobile="ngModel">
+              <div *ngIf="nMobile.invalid && (nMobile.dirty || nMobile.touched)" class="invalid-feedback">
+                <div *ngIf="nMobile.errors.required">
+                  Mobile Number is required.
+                </div>
+                <div *ngIf="nMobile.errors.minlength">
+                  Mobile Number must be 10 digits .
+                </div>
+                <div *ngIf="nMobile.errors.pattern">
+                  Only numbers are allowed
+                </div>
+              </div>
+            </div>
+            <button *ngIf="!userSearchDone" [disabled]="nMobile.invaid" (click)="findUser()"
+              class="btn btn-primary fa-pull-left">Find User</button>
+            <div *ngIf="userSearchDone">
+              <div class="form-group">
+                <input [disabled]="selectedUser" type="text" class="form-control text-title" placeholder="Full Name"
+                  [(ngModel)]="name" name="fname" #fname="ngModel" required
+                  pattern="[A-Za-z]{3,20}( [A-Za-z]{1,20}){1,4}" maxlength="50">
+                <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="invalid-feedback">
+                  <div *ngIf="fname.errors.required">
+                    Full Name is required.
+                  </div>
+                  <div *ngIf="fname.errors.pattern">
+                    firstname(3 - 20 chars) + lastname (1 - 20 chars)
+                  </div>
+                </div>
+              </div>
+              <button *ngIf="!selectedUser" (click)="addUser()" [disabled]="fname.invalid"
+                class="btn btn-primary fa-pull-left">Add School Admin</button>
+              <button *ngIf="selectedUser && !isAlreadySchoolAdmin" [disabled]="fname.invalid"
+                (click)="assignRoleToUser()" class="btn btn-primary fa-pull-left">Assign Role</button>
+            </div>
+          </div>
+          <button class="btn btn-warning fa-pull-right" (click)="resetForm()">Reset Form</button>
+          <h4 class="invalid-feedback fa-pull-left" *ngIf="isAlreadySchoolAdmin">User is already a School Admin</h4>
+        </form>
+      </div>
+
+
+
+    </div>
+  </div>
+
+</div>

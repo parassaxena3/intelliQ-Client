@@ -1,0 +1,4 @@
+.list-of-groups {
+	max-height: 400px;
+	overflow-y: auto;
+}

@@ -1,0 +1,131 @@
+<div class="main-content container-fluid">
+  <div class="feature-content">
+    <div class="row">
+      <div class="offset-md-2 col-md-3">
+        <div class="form-group form-inline">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" data-balloon="Standard" data-balloon-pos="left">
+                <i class="fas fa-graduation-cap"></i>
+              </span>
+            </div>
+            <select class="form-control custom-select" (change)="updateFilters('std',$event.target.value,0)"
+              id="templates">
+              <option [ngValue]="-1">All Standards</option>
+              <option [ngValue]="standard" *ngFor="let standard of standards">{{standard}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group form-inline">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" data-balloon="Subject" data-balloon-pos="left">
+                <i class="fas fa-book"></i>
+              </span>
+            </div>
+            <select (change)="updateFilters('subject',$event.target.value,1)" class="form-control custom-select"
+              id="templates">
+              <option value="">All Subjects</option>
+              <option [ngValue]="subject" *ngFor="let subject of subjects">{{subject}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+    <div class="grid-container">
+      <div *ngFor="let paper of papers | filter:objFilters" class="card profile-card fixed-width">
+        <div class="card-header">
+          <span data-balloon-pos="down" attr.data-balloon="{{paper.tag}}" data-balloon-length="fit">
+            {{paper.tag | trim:20 | titlecase}}
+          </span>
+          <!-- removePaper(paper.testId) -->
+          <a (click)="removePaper(template,paper.testId)" data-balloon-pos="right" data-balloon="Remove Paper"
+            class="remove-paper hidden-control"><i class="fas fa-trash-alt p-1"></i></a>
+          <a (click)="fetchPaper(paper.testId)" data-balloon-pos="right" data-balloon="Preview Paper"
+            data-toggle="modal" data-target="#printModal" class="fetch-paper hidden-control"><i
+              class="fas fa-print p-1"></i></a>
+
+        </div>
+        <div class="card-body">
+
+          <p class="card-text">
+            <span data-balloon="Standard" data-balloon-pos="right"> <i
+                class="fas fa-graduation-cap pr-2"></i>{{paper.std}}</span></p>
+
+          <p class="card-text"><span data-balloon="Subject" data-balloon-pos="right"><i
+                class="fas fa-book pr-2"></i>{{paper.subject}}</span></p>
+          <!-- <p class="card-text" data-balloon-length="fit" data-balloon-pos="down"
+             data-balloon="Trignometry, Geometry, Volumes, Algebra"><i class="fas fa-bookmark pr-2"></i>Trignometry,
+             Geometry ...</p> -->
+          <p class="card-text"><span data-balloon="Created On" data-balloon-pos="right"><i
+                class="fas fa-calendar-alt pr-2"></i>{{paper.lastModifiedDate |  date: dateFormat}}</span></p>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<!-- PRINT MODAL -->
+<div class="modal fade" id="printModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content printBox">
+
+      <!-- Modal body -->
+      <div class="modal-body" *ngIf="loadedPaper">
+        <a (click)="printPaper()" data-balloon-pos="right" data-balloon="Print Paper"
+          class="print-paper fa-pull-right"><i class="fas fa-print p-1"></i></a>
+        <div id="contentToConvert" #contentToConvert>
+          <div *ngFor="let queSet of loadedPaper.sets" class="mb-4">
+            <br>
+            <h4 class="text-center text-dark strong">Set {{queSet.set}}</h4>
+            <hr class="style-eight">
+            <div *ngFor="let section of queSet.sections;let pIndex = index">
+              <!-- Section Header -->
+              <div class="row mt-3">
+                <div class="col-md-12">
+                  <h4 class="text-center "><span>{{utilityService.getSectionDesc(section.type)}}</span></h4>
+                </div>
+              </div>
+              <hr class="section-hr">
+              <!-- Questions -->
+              <div class="row mb-3 question-item" *ngFor="let question of section.questions; let cIndex = index">
+                <div class="col-md-1 ml-2">
+                  <span class="">{{cIndex+1}}.</span>
+                </div>
+                <div class="col-md-7">
+
+
+
+                  <span [innerHTML]="question.titleHtml?question.titleHtml:question.title | safe : 'html'"></span>
+                  <div *ngIf="question.imageUrl" class="text-center"><img [src]="question.imageUrl" width="200"
+                      height="200" class="img-rounded img-thumbnail" alt="">
+                  </div>
+                </div>
+                <div class="col-md-1 mr-1 ">
+                  <span class="badge p-1">
+                    {{question.marks}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to remove this paper?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+  </div>
+</ng-template>

@@ -1,0 +1,88 @@
+.input-group-text {
+  color: #fff;
+  background-color: #343140;
+  width: 40px;
+  border: none;
+}
+
+.input-group>select,
+.input-group>input {
+  border: none;
+  outline: none;
+}
+
+hr {
+  margin: 0 50px 10px 50px;
+  padding: 0px;
+}
+
+.grid-container {
+  display: grid;
+  /* grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); */
+  /* grid-template-columns: auto auto auto auto; */
+  grid-template-columns: repeat(auto-fit, 300px);
+  grid-gap: 20px;
+  padding: 10px;
+  color: #fff;
+
+}
+
+.card {
+  border-radius: 5px;
+  background-color: #6c757d;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+
+.card:hover {
+  background-color: #6c757d;
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 1);
+}
+
+.card-text>span>.fas {
+  color: #ffc107;
+  padding-right: .5rem !important;
+}
+
+.card-header>span>.fas {
+  color: #ffeaa7;
+}
+
+.card-footer {
+  overflow: hidden;
+  color: #fff;
+  font-size: 100%;
+}
+
+.user-remove {
+  color: #ff7675 !important;
+  float: right;
+}
+
+.user-remove:hover {
+  color: #ff7675;
+}
+
+.user-edit {
+  color: #fff;
+  float: left;
+}
+
+.user-edit:hover {
+  color: #fff;
+  float: left;
+
+}
+
+.hidden-control {
+  display: none;
+
+}
+
+.card:hover .hidden-control {
+  display: block;
+}
+
+.fixed-width {
+  width: 260px;
+}

@@ -1,0 +1,190 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
+
+.clickable {
+  cursor: pointer;
+}
+
+#toast-container>div {
+  opacity: 1 !important;
+  z-index: 20 !important;
+}
+
+.ng-valid[required],
+.ng-valid:not(form) {
+  border-right: 5px solid #42a948;
+
+}
+
+.ng-invalid.ng-touched:not(form) {
+  border-right: 5px solid #a94442;
+}
+
+.invalid-feedback {
+  display: block !important;
+  color: #da6260;
+}
+
+/* .invalid-input{
+    border-left: 5px solid #a94442 !important;
+  } */
+
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+
+.text-title {
+  text-transform: capitalize;
+}
+
+.scrollable {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+
+body {
+  background: #e9ecf3;
+}
+
+.header {
+  z-index: 20;
+}
+
+.sidenav {
+  margin-top: 65px;
+  height: 100%;
+  /* Full-height: remove this if you want "auto" height */
+  width: 220px;
+  /* Set the width of the sidebar */
+  position: fixed;
+  /* Fixed Sidebar (stay in place on scroll) */
+  top: 0;
+  /* Stay at the top */
+  left: 0;
+  background-color: #515e63;
+  /* Black */
+  overflow-x: hidden;
+  /* Disable horizontal scroll */
+  padding-top: 20px;
+  z-index: 2;
+}
+
+
+/* The navigation menu links */
+.sidenav a {
+  margin-top: 8px;
+  padding: 20px 0px 20px 0px;
+  color: #ffffff;
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  color: #f19066;
+}
+
+.active-tab {
+  color: #ffc107 !important;
+}
+
+
+.main-content {
+  position: relative;
+  margin-top: 80px;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-family: sans-serif;
+}
+
+.feature-content {
+  position: relative;
+  margin-left: 220px;
+  padding: 10px;
+  font-family: sans-serif;
+}
+
+.footer-bg {
+  background-color: #b2bec3;
+  color: #f1f1f1 !important;
+  z-index: 0;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+
+
+.bg-modify {
+  background-color: #f19066 !important;
+}
+
+.bg-remove {
+  background-color: #ff7675 !important;
+}
+
+.bg-new {
+  background-color: #00b894 !important;
+}
+
+.bg-blue {
+  background-color: #007BFF !important;
+}
+
+.bg-pink {
+  background-color: #E84393 !important;
+}
+
+.text-remove {
+  color: #ff7675 !important;
+}
+
+.text-modify {
+  color: #f19066 !important;
+}
+
+.text-yellow {
+  color: #ffc107 !important;
+}
+
+.text-blue {
+  color: #007BFF;
+}
+
+.quill-editor-div {
+  height: 200px !important;
+  width: 600px !important;
+}
+
+.ql-editor {
+  word-break: break-all;
+  white-space: pre-line !important;
+  border-right: none !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: grey;
+}

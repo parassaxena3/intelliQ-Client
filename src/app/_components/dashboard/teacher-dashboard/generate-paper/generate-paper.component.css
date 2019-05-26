@@ -1,0 +1,118 @@
+.feature-card {
+  border-radius: 10px;
+  margin: 5px;
+  padding: 5px;
+  background-color: #6c757d;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.feature-tab {
+  background: #e9ecf3;
+  padding: 5px;
+  margin-top: 10px;
+  border-radius: 5px;
+  color: #343a40;
+  overflow: hidden;
+}
+
+.input-group-text {
+  color: #fff;
+  background-color: #343140;
+  width: 40px;
+}
+
+.scroll-control {
+  overflow-y: auto;
+  height: 100px;
+}
+
+.table-input {
+  color: #fff;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  margin-left: 20px;
+  padding: 0px;
+  text-align: center;
+  width: 100px;
+}
+
+hr {
+  margin: 0 50px 10px 50px;
+  padding: 0px;
+}
+
+
+.hidden-control {
+  display: none;
+}
+
+.question-item:hover .hidden-control {
+  display: inline-block;
+}
+
+.question-item:hover {
+  cursor: pointer;
+}
+
+.compareModalBox {
+  background-color: #00000090;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.question-card {
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  background: transparent;
+  color: #fff;
+}
+
+
+.question-card:hover {
+  background-color: #515e6390;
+}
+
+.modal-input {
+  background: transparent;
+  border: 1px solid white;
+  outline: none;
+  font-size: 1.5em;
+  color: #ffc107;
+}
+
+.modal-input:focus {
+  background: transparent;
+  border: 1px solid #00b894;
+  outline: none;
+  font-size: 1.5em;
+  color: #ffc107;
+}
+
+.badge-size-big {
+  font-size: 0.8em;
+}
+
+
+.compareModalBox {
+  background-color: #00000090;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.modal-scroll-control {
+  overflow-y: auto;
+  height: 80px;
+}
+
+.question-suggestion-area {
+  overflow: auto;
+  height: 400px;
+}
+
+.question-description-area {
+  overflow: auto;
+  max-height: 100px;
+}

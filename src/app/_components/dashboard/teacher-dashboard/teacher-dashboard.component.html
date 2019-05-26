@@ -1,0 +1,11 @@
+<div class="sidenav text-white">
+  <a class="btn btn-dark" routerLinkActive="active active-tab" [routerLink]="['add-question']"
+    [routerLinkActiveOptions]="{exact:true}">Add Question</a>
+  <a class="btn btn-dark" routerLinkActive="active active-tab" [routerLink]="['view-requests']">View Requests</a>
+  <a class="btn btn-dark" routerLinkActive="active active-tab" [routerLink]="['view-questions']">View Questions</a>
+  <a class="btn btn-dark" routerLinkActive="active active-tab" [routerLink]="['generate-paper']">Generate Question
+    Paper</a>
+  <a class="btn btn-dark" routerLinkActive="active active-tab" [routerLink]="['view-question-papers']">View Question
+    Papers</a>
+</div>
+<router-outlet></router-outlet>

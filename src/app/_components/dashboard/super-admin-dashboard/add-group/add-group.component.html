@@ -1,0 +1,31 @@
+<div class="row feature-content main-content">
+  <div class="col-xs-6">
+    <h4>Add New Group:</h4>
+    <form autocomplete="off" #addGroupForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input type="text" name="groupcode" [(ngModel)]="groupCode" class="form-control text-uppercase"
+          placeholder="Group Code" required pattern="[A-Za-z]*" #groupcode="ngModel" />
+        <div *ngIf="groupcode.invalid && (groupcode.dirty || groupcode.touched)" class="invalid-feedback">
+          <div *ngIf="groupcode.errors.required">
+            Group code is required.
+          </div>
+          <div *ngIf="groupcode.errors.pattern">
+            Only letters (A-Z) with no space
+          </div>
+        </div>
+      </div>
+      <div class="form-group fa-pull-left">
+        <button [disabled]="!addGroupForm.form.valid" class="btn btn-primary">Create Group</button>
+      </div>
+      <h4>{{responseMsg | async}}</h4>
+    </form>
+  </div>
+
+  <div class="col-xs-4 fa-pull-right">
+    <h4>Existing Groups:</h4>
+    <div class="list-group list-of-groups">
+      <a *ngFor="let group of groups | async" class="list-group-item">{{group.code}}</a>
+    </div>
+  </div>
+
+</div>

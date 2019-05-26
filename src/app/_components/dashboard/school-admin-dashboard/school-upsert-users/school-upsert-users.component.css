@@ -1,0 +1,41 @@
+.input-group-text {
+  color: #fff;
+  background-color: #343140;
+  width: 40px;
+  border: none;
+}
+
+.input-group>select,
+.input-group>input {
+  border: none;
+  outline: none;
+}
+
+hr {
+  margin: 0 50px 10px 50px;
+  padding: 0px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-gap: 20px;
+  padding: 10px;
+  color: #fff;
+
+}
+
+
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: #ccc;
+  opacity: 1;
+}
+
+.subject-badge {
+  font-size: 1em;
+}
+
+.standard-badge {
+  font-size: 1.1em;
+}

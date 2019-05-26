@@ -1,0 +1,113 @@
+.feature-card {
+  border-radius: 10px;
+  margin: 5px;
+  padding: 5px;
+  background-color: #6c757d;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.feature-tab {
+  background: #e9ecf3;
+  padding: 5px;
+  margin-top: 10px;
+  border-radius: 5px;
+  color: #343a40;
+  overflow: hidden;
+}
+
+.question-list-item {
+  background: #343a40;
+  border: 2px solid #343a40;
+  outline: none;
+  color: #fff;
+  overflow: hidden;
+}
+
+.question-list-content {
+  /*background-color:#49535a;*/
+  background-color: #fff;
+  color: grey;
+}
+
+.item-badge {
+  background-color: #17a2b8;
+  font-size: 80%;
+  padding: 5px 10px 5px 10px;
+  margin-right: 5px;
+}
+
+.item-badge:hover,
+.item-img-badge:hover {
+  background-color: #ffc107;
+}
+
+.item-img-badge {
+  background-color: #e84393;
+  font-size: 80%;
+  padding: 5px 10px 5px 10px;
+  margin-right: 5px;
+}
+
+.input-group-text {
+  border: none !important;
+  outline: none !important;
+  background-color: #0984e3;
+  color: #fff;
+}
+
+.form-control {
+  background-color: #e9ecf3;
+  border: none;
+  outline: none;
+}
+
+.compareModalBox {
+  background-color: #00000090;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.question-card {
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  background: transparent;
+  color: #fff;
+}
+
+
+.question-card:hover {
+  background-color: #515e6390;
+
+}
+
+.table-field {
+  color: #ffc107;
+}
+
+
+.question-description-area {
+  overflow-y: auto;
+  height: 200px;
+  /* background-color: #e9ecf3 !important; */
+  padding: 10px 0 0 10px !important;
+  background: transparent !important;
+}
+
+.img-upload-box {
+  width: 100%;
+  background: #e9ecf3;
+}
+
+.close {
+  color: #fff !important;
+}
+
+.difference-question {
+  border-right: 5px solid #a94442;
+}
+
+.table-responsive {
+  overflow-x: hidden !important;
+}

@@ -1,0 +1,253 @@
+<div class="main-content container-fluid">
+  <div class="feature-content">
+    <form autocomplete="off" #addQuesForm="ngForm">
+      <div class="row">
+
+        <div class="offset-md-1 col-md-4">
+          <div class="form-group">
+            <label for="std">Standard:</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fas fa-graduation-cap"></i>
+                </span>
+              </div>
+              <select (change)="selectedSubject=null" class="form-control custom-select" id="std"
+                [(ngModel)]="selectedStd" name="selectedStd">
+                <option [ngValue]="null" disabled selected>Select Standard</option>
+                <option *ngFor="let standard of standards" [ngValue]="standard.std">{{standard.std}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="offset-md-1 col-md-4">
+          <div class="form-group">
+            <label for="subject">Subject:</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fas fa-book"></i>
+                </span>
+              </div>
+              <select (change)="checkReviewer();" [disabled]="selectedStd===-1" class="form-control custom-select"
+                id="subject" [(ngModel)]="selectedSubject" name="selectedSubject">
+                <option [ngValue]="null" disabled selected>Select Subject</option>
+                <option *ngFor="let subject of stdSubjectMap.get(selectedStd)" [ngValue]="subject">{{subject.title}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <fieldset [disabled]="selectedSubject==null">
+
+        <div class="row">
+          <div class="offset-md-1 col-md-4">
+            <div class="form-group">
+              <label for="section">Section:</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-indent"></i>
+                  </span>
+                </div>
+                <select class="form-control custom-select" id="section" [(ngModel)]="question.length"
+                  name="questionLength" #questionLength="ngModel" required>
+                  <option [ngValue]="undefined" disabled selected>Select Section</option>
+                  <option [ngValue]="0">Objective</option>
+                  <option [ngValue]="1">Short</option>
+                  <option [ngValue]="2">Brief</option>
+                  <option [ngValue]="3">Long</option>
+                </select>
+                <div *ngIf="questionLength.touched && questionLength.pristine" class="invalid-feedback">
+                  Select Section
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="offset-md-1 col-md-4">
+
+            <div class="form-group">
+              <label for="difficulty">Difficulty:</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-layer-group"></i>
+                  </span>
+                </div>
+                <select class="form-control custom-select" id="difficulty" [(ngModel)]="question.difficulty"
+                  name="questionDifficulty" #questionDifficulty="ngModel" required>
+                  <option [ngValue]="undefined" disabled selected>Select Difficulty</option>
+                  <option [ngValue]="0">Easy</option>
+                  <option [ngValue]="1">Medium</option>
+                  <option [ngValue]="2">Hard</option>
+                </select>
+                <div *ngIf="questionDifficulty.touched && questionDifficulty.pristine" class="invalid-feedback">
+                  Select Difficulty
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="offset-md-1 col-md-4">
+            <div class="form-group">
+              <label for="chapter">Chapter:</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-bookmark"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control text-title" placeholder="Chapter" id="chapter" name="chapter"
+                  [typeahead]="chaptersSuggestions" [(ngModel)]="question.topic" #chapter="ngModel" required
+                  minlength="3">
+                <div *ngIf="chapter.invalid && (chapter.dirty || chapter.touched)" class="invalid-feedback">
+                  <div *ngIf="chapter.errors.required">
+                    Chapter is required.
+                  </div>
+                  <div *ngIf="chapter.errors.minlength">
+                    Chapter name must be atleast 3 characters .
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="offset-md-1 col-md-4">
+            <div class="form-group">
+              <label for="topics">Topics:</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="far fa-bookmark"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control text-title" placeholder="Topics (atleast 3 chars)" id="topics"
+                  name="tags" [typeahead]="tagsSuggestions" (keyup)="addTag($event)" (blur)="addTag($event)"
+                  (typeaheadOnSelect)="addTag($event)" [(ngModel)]="tags">
+              </div>
+            </div>
+
+            <span class="badge bg-dark text-white mr-1" *ngFor="let tag of question.tags">{{tag}}<i
+                (click)="removeTag(tag)" class="fas fa-times clickable ml-1"></i></span>
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="offset-md-1 col-md-4">
+            <div class="form-group">
+              <label for="reviewer">Reviewer:</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-eye"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" name="reviewer" readonly=""
+                  [value]="selectedSubject!==null?selectedSubject.reviewer.userName:''" id="reviewer">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="offset-md-1 col-md-4">
+            <div class="form-group">
+              <label for="myFile">Image:</label><br>
+              <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" id="myFile" name="myFile"
+                class="img-upload-box">
+            </div>
+          </div>
+
+        </div>
+
+      </fieldset>
+      <div class="row">
+
+        <div class="offset-md-1 col-md-5">
+          <div class="form-group">
+            <label for="quillContainer">Description:</label>
+            <a hidden (click)="toggleEditor()" data-toggle="modal" data-target="#editorModal"> <span
+                class="badge bg-modify text-white ml-2 clickable">Toggle
+                Editor</span></a>
+            <div class="input-group">
+
+              <div class="quill-editor-div">
+                <quill-editor class="ql-editor" id="quillContainer" [readOnly]="selectedSubject==null"
+                  [(ngModel)]="quillHtml" [modules]="quillModule" name="description" (keyup)="getSuggestions($event)"
+                  (focusout)="getSuggestions($event)" required #desc="ngModel">
+                </quill-editor>
+              </div>
+              <!-- <div [hidden]="!showMath">
+                <div id="editorContainer"></div>
+              </div> -->
+
+              <div *ngIf="desc.invalid && (desc.dirty || desc.touched)" class="invalid-feedback mt-3">
+                <div *ngIf="desc.errors.required">
+                  Description is required.
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          <br>
+
+          <div class="form-inline mt-5">
+            <button class="btn bg-primary text-white mr-4" style="width: 150px" [disabled]="!addQuesForm.form.valid"
+              (click)="addQuestion()">Add</button>
+            <button class="btn btn-warning text-white" style="width: 150px"
+              (click)="resetForm(addQuesForm)">Reset</button>
+          </div>
+        </div>
+
+        <!-- Question Suggestions -->
+        <div class="col-md-5">
+
+          <div class="table-responsive question-suggestion-area"
+            *ngIf="suggestedQuestions && suggestedQuestions.length>0">
+            <table class="table table-dark table-hover table-striped rounded-lg">
+              <thead style="color: #ffc107;font-style: italic;" class="text-center">
+                <tr>
+                  <th>Similar Added Questions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ques of suggestedQuestions">
+                  <td>
+                    <div class="question-description-area" [innerHTML]="ques.titleHtml | safe:'html'"></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+<div class="modal fade" id="editorModal">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content editorModalBox">
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="card editor-body text-center">
+          <div class="card-body">
+            <i class="fas fa-edit fa-7x text-white"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

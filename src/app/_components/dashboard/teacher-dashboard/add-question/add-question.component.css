@@ -1,0 +1,43 @@
+.input-group-text {
+  color: #fff;
+  background-color: #343140;
+  width: 40px;
+}
+
+.editorModalBox {
+  background-color: #00000090;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.table-field {
+  color: #ffc107;
+}
+
+.img-upload-box {
+  width: 100%;
+  background: #fff;
+}
+
+.question-description-area {
+  overflow: auto;
+  max-height: 100px;
+}
+
+.question-suggestion-area {
+  overflow: auto;
+  height: 400px;
+}
+
+.editor-body {
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  background: transparent;
+  color: #fff;
+}
+
+.question-card:hover {
+  background-color: #636e7280;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
+}

@@ -1,0 +1,131 @@
+<div class="main-content container-fluid">
+  <div class="feature-content">
+    <div class="row">
+      <div class="offset-md-3 col-md-1">
+        <div class="form-group form-inline">
+          <a *ngIf="roleType!==''" class="badge badge-pill btn-warning p-2" (click)="resetForm(true)"
+            data-balloon="Reset Form" data-balloon-pos="left">
+            <i class="fas fa-redo-alt text-white"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group form-inline">
+          <div class="input-group" style="width:100%;">
+            <div class="input-group-prepend">
+              <span class="input-group-text" data-balloon="Role" data-balloon-pos="down">
+                <i class="fas fa-user-tag"></i>
+              </span>
+            </div>
+            <select [disabled]="roleType!==''" [(ngModel)]="roleType" name="roleType"
+              (ngModelChange)="isTeacher=roleType==='teacher'" class="form-control custom-select">
+              <option disabled="" selected="" value="">Select Role</option>
+              <option value="teacher">Teacher</option>
+              <option value="reviewer">Reviewer</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-1" *ngIf="roleType && stdMap.size>0">
+        <div class="form-group">
+          <a class="badge badge-pill bg-new p-2 fa-pull-right" (click)="addUser()" data-balloon="Save"
+            data-balloon-pos="left">
+            <i class="fas fa-save text-white"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <hr>
+
+    <form autocomplete="off" *ngIf="roleType">
+
+      <div class="row">
+        <div class="offset-md-3 col-md-5">
+          <div class="form-group">
+            <label for="mobile">Mobile</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fas fa-mobile-alt"></i>
+                </span>
+              </div>
+              <input id="mobile" #mobileTxt type="text" name="mobile" maxlength="10" minlength="10" class="form-control"
+                [(ngModel)]="user.mobile" (blur)="onMobileEntered()" placeholder="Mobile">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="offset-md-3 col-md-5">
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fas fa-user"></i>
+                </span>
+              </div>
+              <input id="fullName" #nameTxt [disabled]="user.userId" type="text" name="fullname" required
+                class="form-control text-title" [(ngModel)]="user.name" placeholder="Full Name">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="userSearchDone">
+        <div class="offset-md-3 col-md-5">
+          <div class="form-group">
+            <label for="standards">Standards</label>
+            <div class="input-group">
+              <span *ngFor="let std of stds" (click)="selectedStd=std;selectedSubject=''"
+                [ngClass]="getClassForStandard(std)" class="badge text-white rounded p-2 mr-2 mb-1
+                standard-badge">{{std}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="selectedStd!=-1">
+        <div class="offset-md-3 col-md-5">
+          <div class="form-group">
+            <label for="subjects">Subjects</label>
+            <div class="input-group mb-3">
+              <span *ngFor="let subject of subjects" (click)="selectedSubject=subject.title;addRemoveSubject(subject);"
+                [ngClass]="getClassForSubject(subject)"
+                class="clickable badge text-white rounded mr-1 mb-1 subject-badge">{{subject.title}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="roleType=='teacher' && selectedSubject">
+        <div class="offset-md-3 col-md-5">
+          <div class="form-group">
+            <label for="reviewer">Reviewer</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fas fa-user"></i>
+                </span>
+              </div>
+              <select tabindex="4" (change)="updateReviewer()" class="form-control" [(ngModel)]="selectedReviewerId"
+                name="reviewer">
+                <option value="" disabled>Select Reviewer</option>
+                <option *ngFor="let reviewer of reviewerMap.get(selectedStd)?.get(selectedSubject)"
+                  [value]="reviewer.userId">
+                  {{reviewer.name}}
+                </option>
+              </select>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </form>
+
+  </div>
+</div>

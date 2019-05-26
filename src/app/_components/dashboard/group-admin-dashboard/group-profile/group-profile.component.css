@@ -1,0 +1,14 @@
+.profile-card {
+  color: #0984e3;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+  background-color: #6c757d;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+
+.icon-holder {
+  background: #e9ecf3;
+  padding: 20px;
+}

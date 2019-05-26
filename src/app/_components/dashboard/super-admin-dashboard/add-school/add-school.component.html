@@ -1,0 +1,89 @@
+<div class="row feature-content main-content">
+  <div class="col-xs-6 ">
+    <h4>Add New School:</h4>
+    <form autocomplete="off" #addSchoolForm="ngForm">
+      <div class="form-group">
+        <input type="text" required="true" [readonly]="selectedGroup" class="form-control text-uppercase"
+          placeholder="Group Code" name="groupCode" [(ngModel)]="groupCode" minlength="4">
+      </div>
+
+      <div *ngIf="selectedGroup">
+
+        <div class="form-group">
+          <input type="text" required class="form-control text-uppercase" placeholder="Short Name" name="shortName"
+            [(ngModel)]="schoolName" #shortName="ngModel" required maxlength="10" pattern="[A-Za-z]*">
+          <div *ngIf="shortName.invalid && (shortName.dirty || shortName.touched)" class="invalid-feedback">
+            <div *ngIf="shortName.errors.required">
+              School Name is required.
+            </div>
+            <div *ngIf="shortName.errors.pattern">
+              Only letters (A-Z) with no space
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input type="text" class="form-control text-uppercase" placeholder="School Board" name="board"
+            [(ngModel)]="schoolBoard" #board="ngModel" required maxlength="10" pattern="[A-Za-z]*">
+          <div *ngIf="board.invalid && (board.dirty || board.touched)" class="invalid-feedback">
+            <div *ngIf="board.errors.required">
+              Board is required.
+            </div>
+            <div *ngIf="board.errors.pattern">
+              Only characters are allowed
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input type="text" class="form-control text-title" placeholder="City" name="sCity" [(ngModel)]="city"
+            #sCity="ngModel" required maxlength="30">
+          <div *ngIf="sCity.invalid && (sCity.dirty || sCity.touched)" class="invalid-feedback">
+            <div *ngIf="sCity.errors.required">
+              City is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input type="text" class="form-control text-uppercase" placeholder="State" name="sState" [(ngModel)]="state"
+            #sState="ngModel" required maxlength="30">
+          <div *ngIf="sState.invalid && (sState.dirty || sState.touched)" class="invalid-feedback">
+            <div *ngIf="sState.errors.required">
+              State is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Pin Code" name="pincode" [(ngModel)]="pinCode"
+            #pincode="ngModel" required maxlength="6" pattern="[0-9]{6}">
+          <div *ngIf="pincode.invalid && (pincode.dirty || pincode.touched)" class="invalid-feedback">
+            <div *ngIf="pincode.errors.required">
+              Pincode is required.
+            </div>
+            <div *ngIf="pincode.errors.pattern">
+              Pincode must be 6 characters long with only numbers
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row"></div>
+      <button [disabled]="!addSchoolForm.form.valid" (click)="onSubmit()"
+        class="btn btn-primary fa-pull-left">{{btnText}}</button>
+      <button class="btn btn-warning fa-pull-right" (click)="resetForm(true)">Reset Form</button>
+    </form>
+
+  </div>
+
+  <div class="col-xs-4 fa-pull-right" *ngIf="selectedGroup">
+    <h4 *ngIf="schools;else noSchools">Added Schools:</h4>
+    <ng-template #noSchools>
+      <h4>No Schools added in selected group.</h4>
+    </ng-template>
+    <div class="list-group list-of-schools">
+      <a *ngFor="let school of schools" class="list-group-item">{{school.code}}</a>
+    </div>
+  </div>
+</div>
